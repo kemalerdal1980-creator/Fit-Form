@@ -1,0 +1,48 @@
+{
+  "zihinMimarisi": [
+    "DİSİPLİN BAŞARININ TEMELİDİR",
+    "HAYAT KENDİ KALESİNİ İNŞA ETMEKTİR",
+    "ZİHİN GÜÇLÜ OLUNCA BEDEN ASLA YILMAZ",
+    "HER GÜN YENİ BİR BAŞLANGIÇTIR",
+    "BAŞARI KÜÇÜK ÇABALARIN HER GÜN TEKRARLANMASIDIR",
+    "ZAMAN EN DEĞERLİ SERMAYENDİR",
+    "SABIR EN BÜYÜK GÜÇTÜR"
+  ],
+  "sehirBulmaca": [
+    { "city": "PARİS", "hint": "Eyfel Kulesi ve Louvre Müzesi ile tanınan, Fransa'nın başkenti olan moda şehri?" },
+    { "city": "TOKYO", "hint": "Dünyanın en kalabalık metropollerinden biri olan Japonya'nın başkenti?" },
+    { "city": "NEW YORK", "hint": "Özgürlük Heykeli ve Times Meydanı'na ev sahipliği yapan ABD şehri?" },
+    { "city": "ROMA", "hint": "Kolezyum ve Vatikan'a ev sahipliği yapan İtalya'nın başkenti?" },
+    { "city": "BURSA", "hint": "Plaka: 16 | İskender kebabı ve Uludağ ile ünlü kentimiz?" },
+    { "city": "İSTANBUL", "hint": "İki kıtayı birbirine bağlayan tarihi metropolümüz?" },
+    { "city": "LONDRA", "hint": "Big Ben saat kulesi ve Thames Nehri ile ünlü İngiltere başkenti?" },
+    { "city": "KAHİRE", "hint": "Giza Piramitleri ve Nil Nehri kıyısındaki Mısır başkenti?" }
+  ],
+  "tarihSahsiyetler": [
+    {
+      "q": "Ampulü ve elektriğin ticari kullanımını geliştiren ünlü mucit kimdir?",
+      "options": ["Thomas Edison", "Nikola Tesla", "Alexander Graham Bell"],
+      "answer": 0
+    },
+    {
+      "q": "İstanbul'u fetheterek bir çağı kapatıp yeni bir çağ açan padişah kimdir?",
+      "options": ["Kanuni Sultan Süleyman", "Fatih Sultan Mehmet", "Yavuz Sultan Selim"],
+      "answer": 1
+    },
+    {
+      "q": "Yerçekimi kanununu keşfeden ünlü bilim insanı kimdir?",
+      "options": ["Albert Einstein", "Galileo Galilei", "Isaac Newton"],
+      "answer": 2
+    },
+    {
+      "q": "Matbaa aletini icat ederek bilgi devrimini başlatan mucit kimdir?",
+      "options": ["Johannes Gutenberg", "Louis Pasteur", "Alexander Fleming"],
+      "answer": 0
+    },
+    {
+      "q": "Kudüs'ü Haçlılardan geri alan ünlü Müslüman komutan kimdir?",
+      "options": ["Selahaddin Eyyubi", "Alparslan", "Tuğrul Bey"],
+      "answer": 0
+    }
+  ]
+}
