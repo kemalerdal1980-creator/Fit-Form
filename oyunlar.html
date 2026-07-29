@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YAŞAM MİMARİSİ | Zihin & Strateji Portalı</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-card: #1e293b;
+            --accent-gold: #d4af37;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container { width: 100%; max-width: 650px; }
+
+        /* Header */
+        header {
+            text-align: center;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+        }
+
+        .main-brand {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--accent-gold);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        header h1 { 
+            font-size: 1.4rem; 
+            color: var(--text-main); 
+            letter-spacing: 1px; 
+            font-weight: 700;
+        }
+
+        header p { 
+            font-size: 0.85rem; 
+            color: var(--text-muted); 
+            margin-top: 6px; 
+        }
+
+        /* Navigation Tabs */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            flex: 1 1 30%;
+            padding: 10px 6px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .tab-btn.active {
+            background: var(--accent-gold);
+            color: #0f172a;
+            border-color: var(--accent-gold);
+        }
+
+        /* Game Sections */
+        .game-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+            display: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .game-card.active { display: block; }
+
+        .game-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            margin-bottom: 10px;
+        }
+
+        .game-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; }
+
+        /* Shared UI Elements */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            background: var(--accent-gold);
+            color: #0f172a;
+            margin-top: 10px;
+        }
+
+        .btn-secondary {
+            background: var(--border-color);
+            color: var(--text-main);
+        }
+
+        .status-msg {
+            margin-top: 15px;
+            font-size: 0.9rem;
+            text-align: center;
+            font-weight: 600;
+            min-height: 20px;
+        }
+
+        .game-input {
+            width: 100%;
+            padding: 12px;
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-main);
+            outline: none;
+            margin-bottom: 10px;
+        }
+
+        .hint-box {
+            background: #0f172a;
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-align: center;
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .opt-btn {
+            width: 100%;
+            padding: 14px;
+            background: #0f172a;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .opt-btn:hover {
+            border-color: var(--accent-gold);
+            background: #1a253b;
+        }
+
+        /* Game 2: Hayat Blokları Styles */
+        #tower-canvas {
+            background: #0f172a;
+            border-radius: 12px;
+            display: block;
+            margin: 0 auto;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Game 3: Zihin Matriksi Styles */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 280px;
+            margin: 0 auto 20px auto;
+        }
+
+        .matrix-btn {
+            height: 100px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .matrix-btn:active { transform: scale(0.95); }
+        .matrix-btn.lit { opacity: 1 !important; box-shadow: 0 0 25px currentColor; }
+
+        #m-red { background: #ef4444; color: #ef4444; }
+        #m-blue { background: #3b82f6; color: #3b82f6; }
+        #m-green { background: #10b981; color: #10b981; }
+        #m-yellow { background: #f59e0b; color: #f59e0b; }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+        }
+
+        .footer strong { color: var(--accent-gold); }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="main-brand">🏛️ YAŞAM MİMARİSİ</div>
+            <h1>ZİHİN & STRATEJİ PORTALI</h1>
+            <p>Dev Bilgi Deposu & Odaklanma Oyunları</p>
+        </header>
+
+        <!-- Sekme Menüsü -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('game1', event)">🧠 Zihin Mimarisi</button>
+            <button class="tab-btn" onclick="switchTab('game4', event)">🏙️ Şehir Bulmaca</button>
+            <button class="tab-btn" onclick="switchTab('game5', event)">📜 Tarih & Şahsiyetler</button>
+            <button class="tab-btn" onclick="switchTab('game2', event)">🧩 Hayat Blokları</button>
+            <button class="tab-btn" onclick="switchTab('game3', event)">🔢 Zihin Matriksi</button>
+        </div>
+
+        <!-- OYUN 1: ZİHİN MİMARİSİ -->
+        <div id="game1" class="game-card active">
+            <div class="game-title">🧠 Zihin Mimarisi</div>
+            <div class="game-desc">Karışık kelimeleri doğru sıraya koyarak felsefi ilkeyi tamamlayın.</div>
+            
+            <div class="hint-box" id="scrambled-text">Soru Havuzu Yükleniyor...</div>
+            <input type="text" id="g1-input" class="game-input" placeholder="Cümlenin doğrusunu yazın...">
+            <button class="btn" onclick="checkG1()">Kontrol Et</button>
+            <button class="btn btn-secondary" onclick="nextG1()">Sonraki Söz</button>
+            <div id="g1-msg" class="status-msg"></div>
+        </div>
+
+        <!-- OYUN 4: DÜNYA ŞEHİRLERİ BULMACASI -->
+        <div id="game4" class="game-card">
+            <div class="game-title">🏙️ Dünya Şehirleri Bulmacası</div>
+            <div class="game-desc">Dünyanın en bilinen şehirleri arasından sunulan ipuçlarına göre şehri tahmin edin.</div>
+            
+            <div class="hint-box" id="g4-hint">İpucu Yükleniyor...</div>
+            <input type="text" id="g4-input" class="game-input" placeholder="Şehir adını yazın (Örn: PARİS, TOKYO, ROMA)...">
+            <button class="btn" onclick="checkG4()">Tahmin Et</button>
+            <button class="btn btn-secondary" onclick="nextG4()">Yeni Şehir</button>
+            <div id="g4-msg" class="status-msg"></div>
+        </div>
+
+        <!-- OYUN 5: TARİH & ŞAHSİYETLER -->
+        <div id="game5" class="game-card">
+            <div class="game-title">📜 Tarih & Şahsiyetler</div>
+            <div class="game-desc">Binlerce soruluk dev arşivden rastgele sorular.</div>
+            
+            <div class="hint-box" id="g5-question">Soru Yükleniyor...</div>
+            <div class="options-grid" id="g5-options"></div>
+            <button class="btn btn-secondary" onclick="nextG5()">Sonraki Soru</button>
+            <div id="g5-msg" class="status-msg"></div>
+        </div>
+
+        <!-- OYUN 2: HAYAT BLOKLARI -->
+        <div id="game2" class="game-card">
+            <div class="game-title">🧩 Hayat Blokları</div>
+            <div class="game-desc">Blokları tam üst üste getirin ve kuleyi inşa edin!</div>
+            
+            <canvas id="tower-canvas" width="280" height="320"></canvas>
+            <button class="btn" onclick="dropBlock()">Bloğu Bırak / Başlat</button>
+            <div id="g2-msg" class="status-msg">Skor: 0 Kat</div>
+        </div>
+
+        <!-- OYUN 3: ZİHİN MATRİKSİ -->
+        <div id="game3" class="game-card">
+            <div class="game-title">🔢 Zihin Matriksi</div>
+            <div class="game-desc">Işık dizilimini hafızanızda tutun ve takip edin.</div>
+            
+            <div class="matrix-grid">
+                <button id="m-red" class="matrix-btn" onclick="userClickMatrix(0)"></button>
+                <button id="m-blue" class="matrix-btn" onclick="userClickMatrix(1)"></button>
+                <button id="m-green" class="matrix-btn" onclick="userClickMatrix(2)"></button>
+                <button id="m-yellow" class="matrix-btn" onclick="userClickMatrix(3)"></button>
+            </div>
+            <button class="btn" onclick="startMatrixGame()">Oyunu Başlat</button>
+            <div id="g3-msg" class="status-msg">Başlamak için butona basın.</div>
+        </div>
+
+        <div class="footer">
+            Design & Architecture by <strong>Kemal ERDAL</strong>
+        </div>
+    </div>
+
+    <script>
+        let db = { zihinMimarisi: [], sehirBulmaca: [], tarihSahsiyetler: [] };
+
+        async function loadExternalQuestions() {
+            try {
+                const res = await fetch('questions.json');
+                if(res.ok) {
+                    db = await res.json();
+                }
+            } catch(e) { console.log("JSON Yüklenemedi"); }
+            initAllGames();
+        }
+
+        function switchTab(gameId, evt) {
+            document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(gameId).classList.add('active');
+            evt.currentTarget.classList.add('active');
+
+            if(gameId === 'game2') initTowerGame();
+        }
+
+        /* --- OYUN 1: ZİHİN MİMARİSİ --- */
+        let g1Index = 0;
+        function loadG1() {
+            if(!db.zihinMimarisi || db.zihinMimarisi.length === 0) return;
+            g1Index = Math.floor(Math.random() * db.zihinMimarisi.length);
+            let str = db.zihinMimarisi[g1Index];
+            let arr = str.split(' ').sort(() => Math.random() - 0.5);
+            document.getElementById('scrambled-text').innerText = arr.join(' / ');
+            document.getElementById('g1-input').value = '';
+            document.getElementById('g1-msg').innerText = '';
+        }
+
+        function checkG1() {
+            let val = document.getElementById('g1-input').value.trim().toLocaleUpperCase('tr-TR');
+            let msg = document.getElementById('g1-msg');
+            if(val === db.zihinMimarisi[g1Index]) {
+                msg.style.color = 'var(--success-color)';
+                msg.innerText = '🎉 Mükemmel! Zihinsel odağınız harika.';
+            } else {
+                msg.style.color = 'var(--danger-color)';
+                msg.innerText = '❌ Hatalı veya eksik. Kelime sırasını ve karakterleri kontrol edin.';
+            }
+        }
+        function nextG1() { loadG1(); }
+
+        /* --- OYUN 4: ŞEHİR BULMACA --- */
+        let g4Index = 0;
+        function loadG4() {
+            if(!db.sehirBulmaca || db.sehirBulmaca.length === 0) return;
+            g4Index = Math.floor(Math.random() * db.sehirBulmaca.length);
+            document.getElementById('g4-hint').innerText = db.sehirBulmaca[g4Index].hint;
+            document.getElementById('g4-input').value = '';
+            document.getElementById('g4-msg').innerText = '';
+        }
+
+        function checkG4() {
+            let val = document.getElementById('g4-input').value.trim().toLocaleUpperCase('tr-TR');
+            let msg = document.getElementById('g4-msg');
+            if(val === db.sehirBulmaca[g4Index].city) {
+                msg.style.color = 'var(--success-color)';
+                msg.innerText = `🎉 Doğru! Tebrikler, cevap ${db.sehirBulmaca[g4Index].city}.`;
+            } else {
+                msg.style.color = 'var(--danger-color)';
+                msg.innerText = '❌ Yanlış tahmin, tekrar deneyin.';
+            }
+        }
+        function nextG4() { loadG4(); }
+
+        /* --- OYUN 5: TARİH & ŞAHSİYETLER --- */
+        let g5Index = 0;
+        function loadG5() {
+            if(!db.tarihSahsiyetler || db.tarihSahsiyetler.length === 0) return;
+            g5Index = Math.floor(Math.random() * db.tarihSahsiyetler.length);
+            const current = db.tarihSahsiyetler[g5Index];
+            document.getElementById('g5-question').innerText = current.q;
+            document.getElementById('g5-msg').innerText = '';
+            
+            const optDiv = document.getElementById('g5-options');
+            optDiv.innerHTML = '';
+
+            current.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerText = `${String.fromCharCode(65 + idx)}) ${opt}`;
+                btn.onclick = () => checkG5(idx);
+                optDiv.appendChild(btn);
+            });
+        }
+
+        function checkG5(selectedIdx) {
+            const current = db.tarihSahsiyetler[g5Index];
+            const msg = document.getElementById('g5-msg');
+            if(selectedIdx === current.answer) {
+                msg.style.color = 'var(--success-color)';
+                msg.innerText = '🎉 Harika! Doğru cevap.';
+            } else {
+                msg.style.color = 'var(--danger-color)';
+                msg.innerText = `❌ Yanlış! Doğru cevap: ${current.options[current.answer]}`;
+            }
+        }
+        function nextG5() { loadG5(); }
+
+        /* --- OYUN 2: HAYAT BLOKLARI --- */
+        let canvas, ctx, blocks, currentBlock, blockSpeed, score, gameRunning;
+
+        function initTowerGame() {
+            canvas = document.getElementById('tower-canvas');
+            ctx = canvas.getContext('2d');
+            score = 0; blockSpeed = 2; gameRunning = true;
+            blocks = [{ x: 70, y: 290, width: 140, height: 25 }];
+            spawnBlock();
+            requestAnimationFrame(updateTower);
+        }
+
+        function spawnBlock() {
+            let prev = blocks[blocks.length - 1];
+            currentBlock = { x: 0, y: prev.y - 25, width: prev.width, height: 25, dir: 1 };
+        }
+
+        function dropBlock() {
+            if(!gameRunning) { initTowerGame(); return; }
+            let prev = blocks[blocks.length - 1];
+            let diff = currentBlock.x - prev.x;
+
+            if(Math.abs(diff) >= currentBlock.width) {
+                gameRunning = false;
+                document.getElementById('g2-msg').innerText = `💥 Kule Yıkıldı! Skor: ${score} Kat`;
+                return;
+            }
+
+            if(diff > 0) { currentBlock.width -= diff; } 
+            else { currentBlock.width += diff; currentBlock.x = prev.x; }
+
+            blocks.push({...currentBlock});
+            score++;
+            document.getElementById('g2-msg').innerText = `Skor: ${score} Kat`;
+            if(currentBlock.y < 100) { blocks.forEach(b => b.y += 25); }
+            spawnBlock();
+        }
+
+        function updateTower() {
+            if(!gameRunning) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#d4af37';
+            blocks.forEach(b => ctx.fillRect(b.x, b.y, b.width, b.height));
+
+            currentBlock.x += blockSpeed * currentBlock.dir;
+            if(currentBlock.x + currentBlock.width > canvas.width || currentBlock.x < 0) {
+                currentBlock.dir *= -1;
+            }
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillRect(currentBlock.x, currentBlock.y, currentBlock.width, currentBlock.height);
+            requestAnimationFrame(updateTower);
+        }
+
+        /* --- OYUN 3: ZİHİN MATRİKSİ --- */
+        let matrixSeq = [], userSeq = [], matrixLevel = 0, canClick = false;
+
+        function startMatrixGame() {
+            matrixSeq = []; userSeq = []; matrixLevel = 0;
+            nextMatrixLevel();
+        }
+
+        function nextMatrixLevel() {
+            userSeq = []; matrixLevel++;
+            document.getElementById('g3-msg').style.color = 'var(--text-main)';
+            document.getElementById('g3-msg').innerText = `Seviye ${matrixLevel} - İzleyin...`;
+            canClick = false;
+            matrixSeq.push(Math.floor(Math.random() * 4));
+            
+            let i = 0;
+            let interval = setInterval(() => {
+                flashMatrixBtn(matrixSeq[i]);
+                i++;
+                if(i >= matrixSeq.length) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        canClick = true;
+                        document.getElementById('g3-msg').innerText = `Sıra Sizde!`;
+                    }, 500);
+                }
+            }, 800);
+        }
+
+        function flashMatrixBtn(idx) {
+            const btns = ['m-red', 'm-blue', 'm-green', 'm-yellow'];
+            let el = document.getElementById(btns[idx]);
+            el.classList.add('lit');
+            setTimeout(() => el.classList.remove('lit'), 400);
+        }
+
+        function userClickMatrix(idx) {
+            if(!canClick) return;
+            flashMatrixBtn(idx);
+            userSeq.push(idx);
+
+            let currentStep = userSeq.length - 1;
+            if(userSeq[currentStep] !== matrixSeq[currentStep]) {
+                document.getElementById('g3-msg').style.color = 'var(--danger-color)';
+                document.getElementById('g3-msg').innerText = `❌ Yanlış Dizilim! Ulaşılan Seviye: ${matrixLevel}`;
+                canClick = false;
+                return;
+            }
+
+            if(userSeq.length === matrixSeq.length) {
+                canClick = false;
+                document.getElementById('g3-msg').style.color = 'var(--success-color)';
+                document.getElementById('g3-msg').innerText = `Harika! Sonraki Seviyeye Geçiliyor...`;
+                setTimeout(nextMatrixLevel, 1000);
+            }
+        }
+
+        function initAllGames() {
+            loadG1();
+            loadG4();
+            loadG5();
+        }
+
+        window.onload = loadExternalQuestions;
+    </script>
+</body>
+</html>
