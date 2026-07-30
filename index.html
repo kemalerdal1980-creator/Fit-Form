@@ -2,30 +2,24 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YAŞAM MİMARİSİ | FIT-FORM & Beslenme Yönetimi</title>
+    <title>YAŞAM MİMARİSİ | Zihin & Strateji Portalı</title>
     
-    <!-- PWA / Mobile Home Screen Support -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Yaşam Mimarisi">
-
-    <!-- Modern Font: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
             --bg-primary: #0f172a;
             --bg-card: #1e293b;
             --accent-gold: #d4af37;
-            --accent-blue: #38bdf8;
-            --accent-green: #10b981;
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --border-color: #334155;
-            --primary-glow: rgba(212, 175, 55, 0.15);
+            --success-color: #10b981;
+            --danger-color: #ef4444;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
@@ -40,263 +34,444 @@
             align-items: center;
         }
 
-        .container { width: 100%; max-width: 800px; }
+        .container { width: 100%; max-width: 650px; }
 
         /* Header */
-        .portal-header {
+        header {
             text-align: center;
             background: linear-gradient(135deg, #1e293b, #0f172a);
             border: 1px solid var(--border-color);
             border-radius: 20px;
             padding: 25px 20px;
             margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
             position: relative;
             overflow: hidden;
         }
 
-        .portal-header::before {
+        header::before {
             content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
             background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
         }
 
-        .emblem-container {
-            width: 60px; height: 60px; background: #0b1329; border: 2px solid var(--accent-gold);
-            border-radius: 16px; margin: 0 auto 12px auto; display: flex; align-items: center;
-            justify-content: center; box-shadow: 0 0 20px var(--primary-glow);
+        .main-brand {
+            font-size: 0.85rem; font-weight: 800; color: var(--accent-gold);
+            letter-spacing: 3px; text-transform: uppercase; margin-bottom: 5px;
         }
 
-        .emblem-container svg { width: 35px; height: 35px; }
-
-        .portal-title { font-size: 1.6rem; font-weight: 800; letter-spacing: 2px; color: var(--text-main); }
-        .portal-title span { color: var(--accent-gold); }
-        .portal-subtitle { font-size: 0.85rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+        header h1 { font-size: 1.4rem; color: var(--text-main); letter-spacing: 1px; font-weight: 700; }
+        header p { font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; }
 
         /* Navigation Tabs */
-        .tabs { display: flex; gap: 10px; margin-bottom: 25px; }
+        .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
         .tab-btn {
-            flex: 1; padding: 14px 10px; background: var(--bg-card); border: 1px solid var(--border-color);
-            color: var(--text-muted); border-radius: 14px; font-weight: 700; font-size: 0.9rem;
+            flex: 1 1 30%; padding: 10px 6px; background: var(--bg-card);
+            border: 1px solid var(--border-color); color: var(--text-muted);
+            border-radius: 12px; font-weight: 600; font-size: 0.8rem;
             cursor: pointer; transition: all 0.3s; text-align: center;
         }
         .tab-btn.active { background: var(--accent-gold); color: #0f172a; border-color: var(--accent-gold); }
 
-        /* Card Sections */
-        .content-card {
+        /* Game Sections */
+        .game-card {
             background: var(--bg-card); border: 1px solid var(--border-color);
-            border-radius: 20px; padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            display: none;
+            border-radius: 20px; padding: 20px; display: none;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
-        .content-card.active { display: block; }
+        .game-card.active { display: block; }
 
-        .section-title { font-size: 1.25rem; font-weight: 700; color: var(--accent-gold); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .section-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; }
+        .game-title { font-size: 1.2rem; font-weight: 700; color: var(--accent-gold); margin-bottom: 10px; }
+        .game-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; }
 
-        /* Meal Grid */
-        .meal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-top: 15px; }
-        .meal-box {
-            background: #0f172a; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px;
+        /* UI Elements */
+        .btn {
+            width: 100%; padding: 12px; border-radius: 12px; font-weight: 600;
+            cursor: pointer; border: none; background: var(--accent-gold);
+            color: #0f172a; margin-top: 10px;
         }
-        .meal-box h4 { color: var(--accent-blue); font-size: 1rem; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-        .meal-box ul { list-style: none; padding-left: 0; }
-        .meal-box li { font-size: 0.88rem; color: var(--text-main); margin-bottom: 6px; padding-left: 14px; position: relative; }
-        .meal-box li::before { content: "•"; color: var(--accent-gold); position: absolute; left: 0; font-weight: bold; }
+        .btn-secondary { background: var(--border-color); color: var(--text-main); }
 
-        /* Exercise List & Filters */
-        .filter-group { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; }
-        .filter-chip {
-            padding: 8px 14px; background: #0f172a; border: 1px solid var(--border-color);
-            border-radius: 20px; font-size: 0.8rem; color: var(--text-muted); cursor: pointer; white-space: nowrap;
-        }
-        .filter-chip.active { background: var(--accent-blue); color: #0f172a; font-weight: 700; border-color: var(--accent-blue); }
-
-        .exercise-list { display: grid; gap: 12px; }
-        .exercise-item {
-            background: #0f172a; border: 1px solid var(--border-color); border-radius: 12px; padding: 14px;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .ex-info h5 { font-size: 0.95rem; color: var(--text-main); margin-bottom: 3px; }
-        .ex-info p { font-size: 0.8rem; color: var(--text-muted); }
-        .ex-tag {
-            padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700;
-            background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); border: 1px solid rgba(56, 189, 248, 0.3);
+        .status-msg { margin-top: 15px; font-size: 0.9rem; text-align: center; font-weight: 600; min-height: 20px; }
+        .game-input {
+            width: 100%; padding: 12px; background: #0f172a; border: 1px solid var(--border-color);
+            border-radius: 12px; color: var(--text-main); outline: none; margin-bottom: 10px;
         }
 
-        /* Footer */
-        .creator-footer {
-            margin-top: 30px; text-align: center; font-size: 0.8rem; color: var(--text-muted);
-            letter-spacing: 1.5px; border-top: 1px solid var(--border-color); padding-top: 20px; width: 100%;
+        .hint-box {
+            background: #0f172a; border: 2px dashed var(--border-color); border-radius: 12px;
+            padding: 15px; font-size: 1.05rem; font-weight: 600; text-align: center;
+            color: var(--accent-gold); margin-bottom: 15px; line-height: 1.4;
         }
-        .creator-footer strong { color: var(--accent-gold); }
+
+        .options-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .opt-btn {
+            width: 100%; padding: 14px; background: #0f172a; border: 1px solid var(--border-color);
+            border-radius: 12px; color: var(--text-main); font-size: 0.95rem; font-weight: 600;
+            cursor: pointer; text-align: left; transition: all 0.2s;
+        }
+        .opt-btn:hover { border-color: var(--accent-gold); background: #1a253b; }
+
+        /* Game 2: Hayat Blokları */
+        #tower-canvas { background: #0f172a; border-radius: 12px; display: block; margin: 0 auto; border: 1px solid var(--border-color); }
+
+        /* Game 3: Zihin Matriksi */
+        .matrix-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 280px; margin: 0 auto 20px auto; }
+        .matrix-btn { height: 100px; border-radius: 16px; border: none; cursor: pointer; opacity: 0.4; transition: opacity 0.2s, transform 0.1s; }
+        .matrix-btn:active { transform: scale(0.95); }
+        .matrix-btn.lit { opacity: 1 !important; box-shadow: 0 0 25px currentColor; }
+
+        #m-red { background: #ef4444; color: #ef4444; }
+        #m-blue { background: #3b82f6; color: #3b82f6; }
+        #m-green { background: #10b981; color: #10b981; }
+        #m-yellow { background: #f59e0b; color: #f59e0b; }
+
+        .footer { margin-top: 30px; text-align: center; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 15px; }
+        .footer strong { color: var(--accent-gold); }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Header -->
-        <header class="portal-header">
-            <div class="emblem-container">
-                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="50" cy="50" r="38" fill="none" stroke="#d4af37" stroke-width="2.5" opacity="0.8"/>
-                    <rect x="32" y="34" width="8" height="32" fill="#d4af37" rx="2"/>
-                    <rect x="46" y="26" width="8" height="40" fill="#d4af37" rx="2"/>
-                    <rect x="60" y="34" width="8" height="32" fill="#d4af37" rx="2"/>
-                </svg>
-            </div>
-            <h1 class="portal-title">YAŞAM <span>MİMARİSİ</span></h1>
-            <p class="portal-subtitle">Fit-Form & Çeşitlendirilmiş Performans Portalı</p>
+        <header>
+            <div class="main-brand">🏛️ YAŞAM MİMARİSİ</div>
+            <h1>ZİHİN & STRATEJİ PORTALI</h1>
+            <p>Dev Bilgi Deposu & Odaklanma Oyunları</p>
         </header>
 
-        <!-- Tab Buttons -->
+        <!-- Sekme Menüsü -->
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchSection('nutrition', event)">🥗 Esnek Beslenme Paneli</button>
-            <button class="tab-btn" onclick="switchSection('exercises', event)">🏋️ Hareket Kütüphanesi</button>
+            <button class="tab-btn active" onclick="switchTab('game1', event)">🧠 Zihin Mimarisi</button>
+            <button class="tab-btn" onclick="switchTab('game4', event)">🏙️ Şehir Bulmaca</button>
+            <button class="tab-btn" onclick="switchTab('game5', event)">📜 Tarih & Şahsiyetler</button>
+            <button class="tab-btn" onclick="switchTab('game2', event)">🧩 Hayat Blokları</button>
+            <button class="tab-btn" onclick="switchTab('game3', event)">🔢 Zihin Matriksi</button>
         </div>
 
-        <!-- SEKTÖR 1: ÇEŞİTLENDİRİLMİŞ BESLENME ÖNERİLERİ -->
-        <div id="nutrition" class="content-card active">
-            <div class="section-title">🥗 Alternatifli Örnek Öğün Rehberi</div>
-            <div class="section-subtitle">Sadece tavuk ve yumurtaya bağlı kalmadan yüksek protein ve dengeli karbonhidrat alternatifleri:</div>
-
-            <div class="meal-grid">
-                <!-- Kahvaltı -->
-                <div class="meal-box">
-                    <h4>🌅 Kahvaltı Alternatifleri</h4>
-                    <ul>
-                        <li><strong>Seçenek A:</strong> 3 Yumurtalı + Lor Peynirli + Maydanozlu Menemen + 2 Dilim Tam Buğday Ekmeği.</li>
-                        <li><strong>Seçenek B:</strong> Yulaf Ezmesi (50g) + Süt/Yoğurt + 1 Çorba Kaşığı Fıstık Ezmesi + 1 Muz + Ceviz.</li>
-                        <li><strong>Seçenek C:</strong> Süzme Peynir + 3 Dilim Füme Hindi + Bol Yeşillik + Zeytin + Tam Buğday Tost.</li>
-                    </ul>
-                </div>
-
-                <!-- Öğle Yemeği -->
-                <div class="meal-box">
-                    <h4>☀️ Öğle Yemeği Alternatifleri</h4>
-                    <ul>
-                        <li><strong>Et/Köfte:</strong> 180g Izgara Yağsız Dana Köfte / Biftek + Basmati Pirinç Pilavı + Akdeniz Salata.</li>
-                        <li><strong>Balık:</strong> 200g Fırın Somon / Levrek + Fırınlanmış Baharatlı Patates + Bol Limonlu Roka Salata.</li>
-                        <li><strong>Bitkisel/Baklagil:</strong> 1 Kase Yeşil Mercimek Yemeği + Karabuğday (Greçka) Pilavı + Cacık.</li>
-                    </ul>
-                </div>
-
-                <!-- Akşam Yemeği -->
-                <div class="meal-box">
-                    <h4>🌙 Akşam Yemeği Alternatifleri</h4>
-                    <ul>
-                        <li><strong>Deniz Ürünü:</strong> Bol Zeytinyağlı Ton Balıklı (160g) Kinoa Salatası + Ceviz.</li>
-                        <li><strong>Tavuk/Hindi:</strong> 200g Sote Hindi Göğsü / Fırın Şiş + Haşlanmış Brokoli & Havuç + Zeytinyağı.</li>
-                        <li><strong>Kıymalı Baklagil:</strong> Kıymalı Nohut Yemeği + Bulgur Pilavı + Ev Yapımı Yoğurt.</li>
-                    </ul>
-                </div>
-
-                <!-- Ara Öğünler -->
-                <div class="meal-box">
-                    <h4>🍏 Ara Öğün & Atıştırmalıklar</h4>
-                    <ul>
-                        <li>1 Su Bardağı Süzme Yoğurt + 1 Avuç Yaban Mersini / Çilek.</li>
-                        <li>1 Porsiyon Elma / Armut + 10 Adet Çiğ Badem veya Fındık.</li>
-                        <li>1 Ölçek Whey Protein (Süt ile) + 2 Adet Ceviz İçi.</li>
-                    </ul>
-                </div>
-            </div>
+        <!-- OYUN 1: ZİHİN MİMARİSİ -->
+        <div id="game1" class="game-card active">
+            <div class="game-title">🧠 Zihin Mimarisi</div>
+            <div class="game-desc">Karışık kelimeleri doğru sıraya koyarak felsefi ilkeyi tamamlayın.</div>
+            
+            <div class="hint-box" id="scrambled-text">Hazırlanıyor...</div>
+            <input type="text" id="g1-input" class="game-input" placeholder="Cümlenin doğrusunu yazın...">
+            <button class="btn" onclick="checkG1()">Kontrol Et</button>
+            <button class="btn btn-secondary" onclick="nextG1()">Sonraki Söz</button>
+            <div id="g1-msg" class="status-msg"></div>
         </div>
 
-        <!-- SEKTÖR 2: GENİŞ HAREKET KÜTÜPHANESİ -->
-        <div id="exercises" class="content-card">
-            <div class="section-title">🏋️ Anatomi & Egzersiz Kütüphanesi</div>
-            <div class="section-subtitle">Kas grubuna göre filtrelenebilir detaylı hareket listesi:</div>
-
-            <!-- Filtreler -->
-            <div class="filter-group">
-                <div class="filter-chip active" onclick="filterEx('all', event)">Tüm Hareketler</div>
-                <div class="filter-chip" onclick="filterEx('gogus', event)">Göğüs</div>
-                <div class="filter-chip" onclick="filterEx('sirt', event)">Sırt</div>
-                <div class="filter-chip" onclick="filterEx('bacak', event)">Bacak</div>
-                <div class="filter-chip" onclick="filterEx('omuz', event)">Omuz</div>
-                <div class="filter-chip" onclick="filterEx('kol', event)">Kol</div>
-                <div class="filter-chip" onclick="filterEx('karin', event)">Karın & Core</div>
-            </div>
-
-            <!-- Hareket Listesi -->
-            <div class="exercise-list" id="exercise-container">
-                <!-- Javascript dinamik dolduracak -->
-            </div>
+        <!-- OYUN 4: ŞEHİR BULMACA -->
+        <div id="game4" class="game-card">
+            <div class="game-title">🏙️ Dünya Şehirleri Bulmacası</div>
+            <div class="game-desc">İpuçlarına göre şehir adını tahmin edin.</div>
+            
+            <div class="hint-box" id="g4-hint">Hazırlanıyor...</div>
+            <input type="text" id="g4-input" class="game-input" placeholder="Şehir adını yazın (Örn: PARİS, TOKYO, İZMİR)...">
+            <button class="btn" onclick="checkG4()">Tahmin Et</button>
+            <button class="btn btn-secondary" onclick="nextG4()">Yeni Şehir</button>
+            <div id="g4-msg" class="status-msg"></div>
         </div>
 
-        <footer class="creator-footer">
+        <!-- OYUN 5: TARİH & ŞAHSİYETLER -->
+        <div id="game5" class="game-card">
+            <div class="game-title">📜 Tarih & Şahsiyetler</div>
+            <div class="game-desc">Tarihi olaylar ve mucitler hakkında bilginizi ölçün.</div>
+            
+            <div class="hint-box" id="g5-question">Hazırlanıyor...</div>
+            <div class="options-grid" id="g5-options"></div>
+            <button class="btn btn-secondary" onclick="nextG5()">Sonraki Soru</button>
+            <div id="g5-msg" class="status-msg"></div>
+        </div>
+
+        <!-- OYUN 2: HAYAT BLOKLARI -->
+        <div id="game2" class="game-card">
+            <div class="game-title">🧩 Hayat Blokları</div>
+            <div class="game-desc">Blokları tam üst üste getirin ve kuleyi inşa edin!</div>
+            
+            <canvas id="tower-canvas" width="280" height="320"></canvas>
+            <button class="btn" onclick="dropBlock()">Bloğu Bırak / Başlat</button>
+            <div id="g2-msg" class="status-msg">Skor: 0 Kat</div>
+        </div>
+
+        <!-- OYUN 3: ZİHİN MATRİKSİ -->
+        <div id="game3" class="game-card">
+            <div class="game-title">🔢 Zihin Matriksi</div>
+            <div class="game-desc">Işık dizilimini hafızanızda tutun ve takip edin.</div>
+            
+            <div class="matrix-grid">
+                <button id="m-red" class="matrix-btn" onclick="userClickMatrix(0)"></button>
+                <button id="m-blue" class="matrix-btn" onclick="userClickMatrix(1)"></button>
+                <button id="m-green" class="matrix-btn" onclick="userClickMatrix(2)"></button>
+                <button id="m-yellow" class="matrix-btn" onclick="userClickMatrix(3)"></button>
+            </div>
+            <button class="btn" onclick="startMatrixGame()">Oyunu Başlat</button>
+            <div id="g3-msg" class="status-msg">Başlamak için butona basın.</div>
+        </div>
+
+        <div class="footer">
             Design & Architecture by <strong>Kemal ERDAL</strong>
-        </footer>
+        </div>
     </div>
 
     <script>
-        // Tab Geçişleri
-        function switchSection(secId, evt) {
-            document.querySelectorAll('.content-card').forEach(c => c.classList.remove('active'));
+        // TÜM SORULAR DOĞRUDAN KODUN İÇİNDE (HİÇBİR DIŞ DOSYAYA İHTİYAÇ YOKTUR)
+        const db = {
+            zihinMimarisi: [
+                "DİSİPLİN BAŞARININ TEMELİDİR",
+                "HAYAT KENDİ KALESİNİ İNŞA ETMEKTİR",
+                "ZİHİN GÜÇLÜ OLUNCA BEDEN ASLA YILMAZ",
+                "HER GÜN YENİ BİR BAŞLANGIÇTIR",
+                "BAŞARI KÜÇÜK ÇABALARIN HER GÜN TEKRARLANMASIDIR",
+                "ZAMAN EN DEĞERLİ SERMAYENDİR",
+                "SABIR EN BÜYÜK GÜÇTÜR",
+                "SADECE BAŞLAMA CESARETİ OLANLAR BİTİREBİLİR",
+                "GELECEK BUGÜNDEN HAZIRLANANLARINDIR"
+            ],
+            sehirBulmaca: [
+                { city: "PARİS", hint: "Eyfel Kulesi ve Louvre Müzesi ile tanınan Fransa'nın başkenti?" },
+                { city: "TOKYO", hint: "Dünyanın en kalabalık metropollerinden biri olan Japonya'nın başkenti?" },
+                { city: "NEW YORK", hint: "Özgürlük Heykeli ve Times Meydanı'na ev sahipliği yapan ABD şehri?" },
+                { city: "ROMA", hint: "Kolezyum ve Vatikan'a ev sahipliği yapan İtalya'nın başkenti?" },
+                { city: "BURSA", hint: "Plaka: 16 | İskender kebabı ve Uludağ ile ünlü kentimiz?" },
+                { city: "İSTANBUL", hint: "İki kıtayı birbirine bağlayan tarihi metropolümüz?" },
+                { city: "İZMİR", hint: "Plaka: 35 | Ege'nin incisi, Saat Kulesi ve boyozu ile ünlü şehri?" },
+                { city: "LONDRA", hint: "Big Ben saat kulesi ve Thames Nehri ile ünlü İngiltere başkenti?" },
+                { city: "KAHİRE", hint: "Giza Piramitleri ve Nil Nehri kıyısındaki Mısır başkenti?" }
+            ],
+            tarihSahsiyetler: [
+                {
+                    q: "Ampulü ve elektriğin ticari kullanımını geliştiren ünlü mucit kimdir?",
+                    options: ["Thomas Edison", "Nikola Tesla", "Alexander Graham Bell"],
+                    answer: 0
+                },
+                {
+                    q: "İstanbul'u fetheterek bir çağı kapatıp yeni bir çağ açan padişah kimdir?",
+                    options: ["Kanuni Sultan Süleyman", "Fatih Sultan Mehmet", "Yavuz Sultan Selim"],
+                    answer: 1
+                },
+                {
+                    q: "Yerçekimi kanununu keşfeden ünlü bilim insanı kimdir?",
+                    options: ["Albert Einstein", "Galileo Galilei", "Isaac Newton"],
+                    answer: 2
+                },
+                {
+                    q: "Matbaa aletini icat ederek bilgi devrimini başlatan mucit kimdir?",
+                    options: ["Johannes Gutenberg", "Louis Pasteur", "Alexander Fleming"],
+                    answer: 0
+                },
+                {
+                    q: "Kudüs'ü Haçlılardan geri alan ünlü Müslüman komutan kimdir?",
+                    options: ["Selahaddin Eyyubi", "Alparslan", "Tuğrul Bey"],
+                    answer: 0
+                }
+            ]
+        };
+
+        function switchTab(gameId, evt) {
+            document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             
-            document.getElementById(secId).classList.add('active');
+            document.getElementById(gameId).classList.add('active');
             evt.currentTarget.classList.add('active');
+
+            if(gameId === 'game2') initTowerGame();
         }
 
-        // Geniş Egzersiz Kütüphanesi Veritabanı
-        const exerciseData = [
-            // Göğüs
-            { name: "Bench Press (Barbell/Dumbbell)", cat: "gogus", desc: "Tüm göğüs kasını (Pectoralis Major) hedefleyen ana bileşik hareket.", tag: "Göğüs / Temel" },
-            { name: "Incline Dumbbell Press", cat: "gogus", desc: "Üst göğüs bölgesini öne çıkaran açısal itiş hareketi.", tag: "Üst Göğüs" },
-            { name: "Cable Fly / Push-Up", cat: "gogus", desc: "Göğüs kasındaki izole sıkışmayı sağlayan esnetme hareketi.", tag: "Göğüs Izole" },
+        /* --- OYUN 1: ZİHİN MİMARİSİ --- */
+        let g1Index = 0;
+        function loadG1() {
+            g1Index = Math.floor(Math.random() * db.zihinMimarisi.length);
+            let str = db.zihinMimarisi[g1Index];
+            let arr = str.split(' ').sort(() => Math.random() - 0.5);
+            document.getElementById('scrambled-text').innerText = arr.join(' / ');
+            document.getElementById('g1-input').value = '';
+            document.getElementById('g1-msg').innerText = '';
+        }
+
+        function checkG1() {
+            let val = document.getElementById('g1-input').value.trim().toLocaleUpperCase('tr-TR');
+            let msg = document.getElementById('g1-msg');
+            if(val === db.zihinMimarisi[g1Index]) {
+                msg.style.color = 'var(--success-color)';
+                msg.innerText = '🎉 Mükemmel! Zihinsel odağınız harika.';
+            } else {
+                msg.style.color = 'var(--danger-color)';
+                msg.innerText = '❌ Hatalı veya eksik. Kelime sırasını ve karakterleri kontrol edin.';
+            }
+        }
+        function nextG1() { loadG1(); }
+
+        /* --- OYUN 4: ŞEHİR BULMACA --- */
+        let g4Index = 0;
+        function loadG4() {
+            g4Index = Math.floor(Math.random() * db.sehirBulmaca.length);
+            document.getElementById('g4-hint').innerText = db.sehirBulmaca[g4Index].hint;
+            document.getElementById('g4-input').value = '';
+            document.getElementById('g4-msg').innerText = '';
+        }
+
+        function checkG4() {
+            let val = document.getElementById('g4-input').value.trim().toLocaleUpperCase('tr-TR');
+            let msg = document.getElementById('g4-msg');
+            if(val === db.sehirBulmaca[g4Index].city) {
+                msg.style.color = 'var(--success-color)';
+                msg.innerText = `🎉 Doğru! Tebrikler, cevap ${db.sehirBulmaca[g4Index].city}.`;
+            } else {
+                msg.style.color = 'var(--danger-color)';
+                msg.innerText = '❌ Yanlış tahmin, tekrar deneyin.';
+            }
+        }
+        function nextG4() { loadG4(); }
+
+        /* --- OYUN 5: TARİH & ŞAHSİYETLER --- */
+        let g5Index = 0;
+        function loadG5() {
+            g5Index = Math.floor(Math.random() * db.tarihSahsiyetler.length);
+            const current = db.tarihSahsiyetler[g5Index];
+            document.getElementById('g5-question').innerText = current.q;
+            document.getElementById('g5-msg').innerText = '';
             
-            // Sırt
-            { name: "Barbell / Dumbbell Row", cat: "sirt", desc: "Sırt kalınlığını ve kanat hacmini geliştiren çekiş hareketi.", tag: "Sırt Kalınlık" },
-            { name: "Lat Pulldown / Barfiks", cat: "sirt", desc: "Sırt genişliği (V-Form) için en etkili üstten çekiş egzersizi.", tag: "Sırt Genişlik" },
-            { name: "Deadlift / Face Pull", cat: "sirt", desc: "Tüm arka zincir ve posteriyor omurga sağlığını güçlendiren temel hareket.", tag: "Arka Zincir" },
+            const optDiv = document.getElementById('g5-options');
+            optDiv.innerHTML = '';
 
-            // Bacak
-            { name: "Barbell Squat / Goblet Squat", cat: "bacak", desc: "Bacak ve kalça kaslarının (Quadriceps/Glute) şahı olan bileşik egzersiz.", tag: "Bacak Temel" },
-            { name: "Romanian Deadlift (RDL)", cat: "bacak", desc: "Arka bacak (Hamstring) ve kalça estetiği için en iyi esnetme hareketi.", tag: "Arka Bacak" },
-            { name: "Leg Press / Lunges (Adımlama)", cat: "bacak", desc: "Bacak hacmi ve tek taraflı kuvvet dengesini sağlayan hareket.", tag: "Bacak İzolasyon" },
-
-            // Omuz
-            { name: "Overhead Dumbbell Press", cat: "omuz", desc: "Omuz başlarını (Deltoid) bütünsel olarak büyüten dikey itiş.", tag: "Omuz Temel" },
-            { name: "Lateral Raise (Yana Açış)", cat: "omuz", desc: "Omuz genişliği ve 3D omuz görünümü sağlayan izole hareket.", tag: "Yan Omuz" },
-            { name: "Rear Delt Fly", cat: "omuz", desc: "Postür düzeltici ve arka omuz odaklı izole egzersiz.", tag: "Arka Omuz" },
-
-            // Kol
-            { name: "Barbell / Dumbbell Biceps Curl", cat: "kol", desc: "Ön kol kaslarını (Biceps) çalıştıran temel bükme hareketi.", tag: "Biceps" },
-            { name: "Triceps Pushdown / Dips", cat: "kol", desc: "Arka kol (Triceps) kütlesini ve itiş gücünü artıran egzersiz.", tag: "Triceps" },
-
-            // Karın & Core
-            { name: "Plank / Side Plank", cat: "karin", desc: "Core bölgesini ve derin karın kaslarını izometrik güçlendiren statik duruş.", tag: "Core Denge" },
-            { name: "Hanging Leg Raise", cat: "karin", desc: "Alt karın kaslarını en yüksek aktivasyonla çalışan hareket.", tag: "Alt Karın" }
-        ];
-
-        function renderExercises(filter = 'all') {
-            const container = document.getElementById('exercise-container');
-            container.innerHTML = '';
-
-            const filtered = filter === 'all' ? exerciseData : exerciseData.filter(e => e.cat === filter);
-
-            filtered.forEach(ex => {
-                const item = document.createElement('div');
-                item.className = 'exercise-item';
-                item.innerHTML = `
-                    <div class="ex-info">
-                        <h5>${ex.name}</h5>
-                        <p>${ex.desc}</p>
-                    </div>
-                    <div class="ex-tag">${ex.tag}</div>
-                `;
-                container.appendChild(item);
+            current.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerText = `${String.fromCharCode(65 + idx)}) ${opt}`;
+                btn.onclick = () => checkG5(idx);
+                optDiv.appendChild(btn);
             });
         }
 
-        function filterEx(cat, evt) {
-            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-            evt.currentTarget.classList.add('active');
-            renderExercises(cat);
+        function checkG5(selectedIdx) {
+            const current = db.tarihSahsiyetler[g5Index];
+            const msg = document.getElementById('g5-msg');
+            if(selectedIdx === current.answer) {
+                msg.style.color = 'var(--success-color)';
+                msg.innerText = '🎉 Harika! Doğru cevap.';
+            } else {
+                msg.style.color = 'var(--danger-color)';
+                msg.innerText = `❌ Yanlış! Doğru cevap: ${current.options[current.answer]}`;
+            }
+        }
+        function nextG5() { loadG5(); }
+
+        /* --- OYUN 2: HAYAT BLOKLARI --- */
+        let canvas, ctx, blocks, currentBlock, blockSpeed, score, gameRunning;
+
+        function initTowerGame() {
+            canvas = document.getElementById('tower-canvas');
+            ctx = canvas.getContext('2d');
+            score = 0; blockSpeed = 2; gameRunning = true;
+            blocks = [{ x: 70, y: 290, width: 140, height: 25 }];
+            spawnBlock();
+            requestAnimationFrame(updateTower);
         }
 
-        // İlk yükleme
-        renderExercises();
+        function spawnBlock() {
+            let prev = blocks[blocks.length - 1];
+            currentBlock = { x: 0, y: prev.y - 25, width: prev.width, height: 25, dir: 1 };
+        }
+
+        function dropBlock() {
+            if(!gameRunning) { initTowerGame(); return; }
+            let prev = blocks[blocks.length - 1];
+            let diff = currentBlock.x - prev.x;
+
+            if(Math.abs(diff) >= currentBlock.width) {
+                gameRunning = false;
+                document.getElementById('g2-msg').innerText = `💥 Kule Yıkıldı! Skor: ${score} Kat`;
+                return;
+            }
+
+            if(diff > 0) { currentBlock.width -= diff; } 
+            else { currentBlock.width += diff; currentBlock.x = prev.x; }
+
+            blocks.push({...currentBlock});
+            score++;
+            document.getElementById('g2-msg').innerText = `Skor: ${score} Kat`;
+            if(currentBlock.y < 100) { blocks.forEach(b => b.y += 25); }
+            spawnBlock();
+        }
+
+        function updateTower() {
+            if(!gameRunning) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#d4af37';
+            blocks.forEach(b => ctx.fillRect(b.x, b.y, b.width, b.height));
+
+            currentBlock.x += blockSpeed * currentBlock.dir;
+            if(currentBlock.x + currentBlock.width > canvas.width || currentBlock.x < 0) {
+                currentBlock.dir *= -1;
+            }
+
+            ctx.fillStyle = '#38bdf8';
+            ctx.fillRect(currentBlock.x, currentBlock.y, currentBlock.width, currentBlock.height);
+            requestAnimationFrame(updateTower);
+        }
+
+        /* --- OYUN 3: ZİHİN MATRİKSİ --- */
+        let matrixSeq = [], userSeq = [], matrixLevel = 0, canClick = false;
+
+        function startMatrixGame() {
+            matrixSeq = []; userSeq = []; matrixLevel = 0;
+            nextMatrixLevel();
+        }
+
+        function nextMatrixLevel() {
+            userSeq = []; matrixLevel++;
+            document.getElementById('g3-msg').style.color = 'var(--text-main)';
+            document.getElementById('g3-msg').innerText = `Seviye ${matrixLevel} - İzleyin...`;
+            canClick = false;
+            matrixSeq.push(Math.floor(Math.random() * 4));
+            
+            let i = 0;
+            let interval = setInterval(() => {
+                flashMatrixBtn(matrixSeq[i]);
+                i++;
+                if(i >= matrixSeq.length) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        canClick = true;
+                        document.getElementById('g3-msg').innerText = `Sıra Sizde!`;
+                    }, 500);
+                }
+            }, 800);
+        }
+
+        function flashMatrixBtn(idx) {
+            const btns = ['m-red', 'm-blue', 'm-green', 'm-yellow'];
+            let el = document.getElementById(btns[idx]);
+            el.classList.add('lit');
+            setTimeout(() => el.classList.remove('lit'), 400);
+        }
+
+        function userClickMatrix(idx) {
+            if(!canClick) return;
+            flashMatrixBtn(idx);
+            userSeq.push(idx);
+
+            let currentStep = userSeq.length - 1;
+            if(userSeq[currentStep] !== matrixSeq[currentStep]) {
+                document.getElementById('g3-msg').style.color = 'var(--danger-color)';
+                document.getElementById('g3-msg').innerText = `❌ Yanlış Dizilim! Ulaşılan Seviye: ${matrixLevel}`;
+                canClick = false;
+                return;
+            }
+
+            if(userSeq.length === matrixSeq.length) {
+                canClick = false;
+                document.getElementById('g3-msg').style.color = 'var(--success-color)';
+                document.getElementById('g3-msg').innerText = `Harika! Sonraki Seviyeye Geçiliyor...`;
+                setTimeout(nextMatrixLevel, 1000);
+            }
+        }
+
+        // Sayfa Açıldığında Tüm Oyunları Anında Çalıştır
+        window.onload = function() {
+            loadG1();
+            loadG4();
+            loadG5();
+        };
     </script>
 </body>
 </html>
