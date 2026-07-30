@@ -50,186 +50,73 @@
         }
 
         header::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 3px;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
             background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
         }
 
         .main-brand {
-            font-size: 0.85rem;
-            font-weight: 800;
-            color: var(--accent-gold);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 5px;
+            font-size: 0.85rem; font-weight: 800; color: var(--accent-gold);
+            letter-spacing: 3px; text-transform: uppercase; margin-bottom: 5px;
         }
 
-        header h1 { 
-            font-size: 1.4rem; 
-            color: var(--text-main); 
-            letter-spacing: 1px; 
-            font-weight: 700;
-        }
-
-        header p { 
-            font-size: 0.85rem; 
-            color: var(--text-muted); 
-            margin-top: 6px; 
-        }
+        header h1 { font-size: 1.4rem; color: var(--text-main); letter-spacing: 1px; font-weight: 700; }
+        header p { font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; }
 
         /* Navigation Tabs */
-        .tabs {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 20px;
-        }
-
+        .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
         .tab-btn {
-            flex: 1 1 30%;
-            padding: 10px 6px;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            color: var(--text-muted);
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
+            flex: 1 1 30%; padding: 10px 6px; background: var(--bg-card);
+            border: 1px solid var(--border-color); color: var(--text-muted);
+            border-radius: 12px; font-weight: 600; font-size: 0.8rem;
+            cursor: pointer; transition: all 0.3s; text-align: center;
         }
-
-        .tab-btn.active {
-            background: var(--accent-gold);
-            color: #0f172a;
-            border-color: var(--accent-gold);
-        }
+        .tab-btn.active { background: var(--accent-gold); color: #0f172a; border-color: var(--accent-gold); }
 
         /* Game Sections */
         .game-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 20px;
-            padding: 20px;
-            display: none;
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 20px; padding: 20px; display: none;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
-
         .game-card.active { display: block; }
 
-        .game-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--accent-gold);
-            margin-bottom: 10px;
-        }
-
+        .game-title { font-size: 1.2rem; font-weight: 700; color: var(--accent-gold); margin-bottom: 10px; }
         .game-desc { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; }
 
-        /* Shared UI Elements */
+        /* UI Elements */
         .btn {
-            width: 100%;
-            padding: 12px;
-            border-radius: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            background: var(--accent-gold);
-            color: #0f172a;
-            margin-top: 10px;
+            width: 100%; padding: 12px; border-radius: 12px; font-weight: 600;
+            cursor: pointer; border: none; background: var(--accent-gold);
+            color: #0f172a; margin-top: 10px;
         }
+        .btn-secondary { background: var(--border-color); color: var(--text-main); }
 
-        .btn-secondary {
-            background: var(--border-color);
-            color: var(--text-main);
-        }
-
-        .status-msg {
-            margin-top: 15px;
-            font-size: 0.9rem;
-            text-align: center;
-            font-weight: 600;
-            min-height: 20px;
-        }
-
+        .status-msg { margin-top: 15px; font-size: 0.9rem; text-align: center; font-weight: 600; min-height: 20px; }
         .game-input {
-            width: 100%;
-            padding: 12px;
-            background: #0f172a;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            color: var(--text-main);
-            outline: none;
-            margin-bottom: 10px;
+            width: 100%; padding: 12px; background: #0f172a; border: 1px solid var(--border-color);
+            border-radius: 12px; color: var(--text-main); outline: none; margin-bottom: 10px;
         }
 
         .hint-box {
-            background: #0f172a;
-            border: 2px dashed var(--border-color);
-            border-radius: 12px;
-            padding: 15px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            text-align: center;
-            color: var(--accent-gold);
-            margin-bottom: 15px;
-            line-height: 1.4;
+            background: #0f172a; border: 2px dashed var(--border-color); border-radius: 12px;
+            padding: 15px; font-size: 1.05rem; font-weight: 600; text-align: center;
+            color: var(--accent-gold); margin-bottom: 15px; line-height: 1.4;
         }
 
-        .options-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
+        .options-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
         .opt-btn {
-            width: 100%;
-            padding: 14px;
-            background: #0f172a;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            color: var(--text-main);
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: left;
-            transition: all 0.2s;
+            width: 100%; padding: 14px; background: #0f172a; border: 1px solid var(--border-color);
+            border-radius: 12px; color: var(--text-main); font-size: 0.95rem; font-weight: 600;
+            cursor: pointer; text-align: left; transition: all 0.2s;
         }
+        .opt-btn:hover { border-color: var(--accent-gold); background: #1a253b; }
 
-        .opt-btn:hover {
-            border-color: var(--accent-gold);
-            background: #1a253b;
-        }
+        /* Game 2: Hayat Blokları */
+        #tower-canvas { background: #0f172a; border-radius: 12px; display: block; margin: 0 auto; border: 1px solid var(--border-color); }
 
-        /* Game 2: Hayat Blokları Styles */
-        #tower-canvas {
-            background: #0f172a;
-            border-radius: 12px;
-            display: block;
-            margin: 0 auto;
-            border: 1px solid var(--border-color);
-        }
-
-        /* Game 3: Zihin Matriksi Styles */
-        .matrix-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            max-width: 280px;
-            margin: 0 auto 20px auto;
-        }
-
-        .matrix-btn {
-            height: 100px;
-            border-radius: 16px;
-            border: none;
-            cursor: pointer;
-            opacity: 0.4;
-            transition: opacity 0.2s, transform 0.1s;
-        }
-
+        /* Game 3: Zihin Matriksi */
+        .matrix-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 280px; margin: 0 auto 20px auto; }
+        .matrix-btn { height: 100px; border-radius: 16px; border: none; cursor: pointer; opacity: 0.4; transition: opacity 0.2s, transform 0.1s; }
         .matrix-btn:active { transform: scale(0.95); }
         .matrix-btn.lit { opacity: 1 !important; box-shadow: 0 0 25px currentColor; }
 
@@ -238,15 +125,7 @@
         #m-green { background: #10b981; color: #10b981; }
         #m-yellow { background: #f59e0b; color: #f59e0b; }
 
-        .footer {
-            margin-top: 30px;
-            text-align: center;
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-color);
-            padding-top: 15px;
-        }
-
+        .footer { margin-top: 30px; text-align: center; font-size: 0.8rem; color: var(--text-muted); border-top: 1px solid var(--border-color); padding-top: 15px; }
         .footer strong { color: var(--accent-gold); }
     </style>
 </head>
@@ -273,20 +152,20 @@
             <div class="game-title">🧠 Zihin Mimarisi</div>
             <div class="game-desc">Karışık kelimeleri doğru sıraya koyarak felsefi ilkeyi tamamlayın.</div>
             
-            <div class="hint-box" id="scrambled-text">Soru Havuzu Yükleniyor...</div>
+            <div class="hint-box" id="scrambled-text">Hazırlanıyor...</div>
             <input type="text" id="g1-input" class="game-input" placeholder="Cümlenin doğrusunu yazın...">
             <button class="btn" onclick="checkG1()">Kontrol Et</button>
             <button class="btn btn-secondary" onclick="nextG1()">Sonraki Söz</button>
             <div id="g1-msg" class="status-msg"></div>
         </div>
 
-        <!-- OYUN 4: DÜNYA ŞEHİRLERİ BULMACASI -->
+        <!-- OYUN 4: ŞEHİR BULMACA -->
         <div id="game4" class="game-card">
             <div class="game-title">🏙️ Dünya Şehirleri Bulmacası</div>
-            <div class="game-desc">Dünyanın en bilinen şehirleri arasından sunulan ipuçlarına göre şehri tahmin edin.</div>
+            <div class="game-desc">İpuçlarına göre şehir adını tahmin edin.</div>
             
-            <div class="hint-box" id="g4-hint">İpucu Yükleniyor...</div>
-            <input type="text" id="g4-input" class="game-input" placeholder="Şehir adını yazın (Örn: PARİS, TOKYO, ROMA)...">
+            <div class="hint-box" id="g4-hint">Hazırlanıyor...</div>
+            <input type="text" id="g4-input" class="game-input" placeholder="Şehir adını yazın (Örn: PARİS, TOKYO, İZMİR)...">
             <button class="btn" onclick="checkG4()">Tahmin Et</button>
             <button class="btn btn-secondary" onclick="nextG4()">Yeni Şehir</button>
             <div id="g4-msg" class="status-msg"></div>
@@ -295,9 +174,9 @@
         <!-- OYUN 5: TARİH & ŞAHSİYETLER -->
         <div id="game5" class="game-card">
             <div class="game-title">📜 Tarih & Şahsiyetler</div>
-            <div class="game-desc">Binlerce soruluk dev arşivden rastgele sorular.</div>
+            <div class="game-desc">Tarihi olaylar ve mucitler hakkında bilginizi ölçün.</div>
             
-            <div class="hint-box" id="g5-question">Soru Yükleniyor...</div>
+            <div class="hint-box" id="g5-question">Hazırlanıyor...</div>
             <div class="options-grid" id="g5-options"></div>
             <button class="btn btn-secondary" onclick="nextG5()">Sonraki Soru</button>
             <div id="g5-msg" class="status-msg"></div>
@@ -334,17 +213,58 @@
     </div>
 
     <script>
-        let db = { zihinMimarisi: [], sehirBulmaca: [], tarihSahsiyetler: [] };
-
-        async function loadExternalQuestions() {
-            try {
-                const res = await fetch('questions.json');
-                if(res.ok) {
-                    db = await res.json();
+        // TÜM SORULAR DOĞRUDAN KODUN İÇİNDE (HİÇBİR DIŞ DOSYAYA İHTİYAÇ YOKTUR)
+        const db = {
+            zihinMimarisi: [
+                "DİSİPLİN BAŞARININ TEMELİDİR",
+                "HAYAT KENDİ KALESİNİ İNŞA ETMEKTİR",
+                "ZİHİN GÜÇLÜ OLUNCA BEDEN ASLA YILMAZ",
+                "HER GÜN YENİ BİR BAŞLANGIÇTIR",
+                "BAŞARI KÜÇÜK ÇABALARIN HER GÜN TEKRARLANMASIDIR",
+                "ZAMAN EN DEĞERLİ SERMAYENDİR",
+                "SABIR EN BÜYÜK GÜÇTÜR",
+                "SADECE BAŞLAMA CESARETİ OLANLAR BİTİREBİLİR",
+                "GELECEK BUGÜNDEN HAZIRLANANLARINDIR"
+            ],
+            sehirBulmaca: [
+                { city: "PARİS", hint: "Eyfel Kulesi ve Louvre Müzesi ile tanınan Fransa'nın başkenti?" },
+                { city: "TOKYO", hint: "Dünyanın en kalabalık metropollerinden biri olan Japonya'nın başkenti?" },
+                { city: "NEW YORK", hint: "Özgürlük Heykeli ve Times Meydanı'na ev sahipliği yapan ABD şehri?" },
+                { city: "ROMA", hint: "Kolezyum ve Vatikan'a ev sahipliği yapan İtalya'nın başkenti?" },
+                { city: "BURSA", hint: "Plaka: 16 | İskender kebabı ve Uludağ ile ünlü kentimiz?" },
+                { city: "İSTANBUL", hint: "İki kıtayı birbirine bağlayan tarihi metropolümüz?" },
+                { city: "İZMİR", hint: "Plaka: 35 | Ege'nin incisi, Saat Kulesi ve boyozu ile ünlü şehri?" },
+                { city: "LONDRA", hint: "Big Ben saat kulesi ve Thames Nehri ile ünlü İngiltere başkenti?" },
+                { city: "KAHİRE", hint: "Giza Piramitleri ve Nil Nehri kıyısındaki Mısır başkenti?" }
+            ],
+            tarihSahsiyetler: [
+                {
+                    q: "Ampulü ve elektriğin ticari kullanımını geliştiren ünlü mucit kimdir?",
+                    options: ["Thomas Edison", "Nikola Tesla", "Alexander Graham Bell"],
+                    answer: 0
+                },
+                {
+                    q: "İstanbul'u fetheterek bir çağı kapatıp yeni bir çağ açan padişah kimdir?",
+                    options: ["Kanuni Sultan Süleyman", "Fatih Sultan Mehmet", "Yavuz Sultan Selim"],
+                    answer: 1
+                },
+                {
+                    q: "Yerçekimi kanununu keşfeden ünlü bilim insanı kimdir?",
+                    options: ["Albert Einstein", "Galileo Galilei", "Isaac Newton"],
+                    answer: 2
+                },
+                {
+                    q: "Matbaa aletini icat ederek bilgi devrimini başlatan mucit kimdir?",
+                    options: ["Johannes Gutenberg", "Louis Pasteur", "Alexander Fleming"],
+                    answer: 0
+                },
+                {
+                    q: "Kudüs'ü Haçlılardan geri alan ünlü Müslüman komutan kimdir?",
+                    options: ["Selahaddin Eyyubi", "Alparslan", "Tuğrul Bey"],
+                    answer: 0
                 }
-            } catch(e) { console.log("JSON Yüklenemedi"); }
-            initAllGames();
-        }
+            ]
+        };
 
         function switchTab(gameId, evt) {
             document.querySelectorAll('.game-card').forEach(c => c.classList.remove('active'));
@@ -359,7 +279,6 @@
         /* --- OYUN 1: ZİHİN MİMARİSİ --- */
         let g1Index = 0;
         function loadG1() {
-            if(!db.zihinMimarisi || db.zihinMimarisi.length === 0) return;
             g1Index = Math.floor(Math.random() * db.zihinMimarisi.length);
             let str = db.zihinMimarisi[g1Index];
             let arr = str.split(' ').sort(() => Math.random() - 0.5);
@@ -384,7 +303,6 @@
         /* --- OYUN 4: ŞEHİR BULMACA --- */
         let g4Index = 0;
         function loadG4() {
-            if(!db.sehirBulmaca || db.sehirBulmaca.length === 0) return;
             g4Index = Math.floor(Math.random() * db.sehirBulmaca.length);
             document.getElementById('g4-hint').innerText = db.sehirBulmaca[g4Index].hint;
             document.getElementById('g4-input').value = '';
@@ -407,7 +325,6 @@
         /* --- OYUN 5: TARİH & ŞAHSİYETLER --- */
         let g5Index = 0;
         function loadG5() {
-            if(!db.tarihSahsiyetler || db.tarihSahsiyetler.length === 0) return;
             g5Index = Math.floor(Math.random() * db.tarihSahsiyetler.length);
             const current = db.tarihSahsiyetler[g5Index];
             document.getElementById('g5-question').innerText = current.q;
@@ -549,13 +466,12 @@
             }
         }
 
-        function initAllGames() {
+        // Sayfa Açıldığında Tüm Oyunları Anında Çalıştır
+        window.onload = function() {
             loadG1();
             loadG4();
             loadG5();
-        }
-
-        window.onload = loadExternalQuestions;
+        };
     </script>
 </body>
 </html>
