@@ -3,1490 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YAŞAM MİMARİSİ | Bütünsel Yaşam Portalı</title>
+    <title>YAŞAM MİMARİSİ | FIT-FORM & Beslenme Yönetimi</title>
+    
+    <!-- PWA / Mobile Home Screen Support -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Yaşam Mimarisi">
 
-    <!-- Modern Premium Font: Inter -->
+    <!-- Modern Font: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- PDF & Grafik Kütüphaneleri -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-
     <style>
         :root {
-            --primary: #10b981;
-            --primary-dark: #059669;
-            --secondary: #3b82f6;
-            --purple: #8b5cf6;
-            --amber: #f59e0b;
-            --rose: #f43f5e;
-            --bg-body: #f1f5f9;
-            --card-bg: #ffffff;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --border-color: #cbd5e1;
-            --input-bg: #f8fafc;
-            --radius-lg: 14px;
-            --radius-md: 8px;
-            --shadow-md: 0 4px 16px -2px rgba(0,0,0,0.06);
-        }
-
-        /* GECE LACİVERTI TEMA */
-        body.dark-theme {
-            --bg-body: #0b1329;
-            --card-bg: #111c3a;
-            --text-main: #f1f5f9;
+            --bg-primary: #0f172a;
+            --bg-card: #1e293b;
+            --accent-gold: #d4af37;
+            --accent-blue: #38bdf8;
+            --accent-green: #10b981;
+            --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --border-color: #1e2d54;
-            --input-bg: #070d1e;
+            --border-color: #334155;
+            --primary-glow: rgba(212, 175, 55, 0.15);
         }
 
-        body { 
-            font-family: 'Inter', system-ui, -apple-system, sans-serif; 
-            padding: 12px 10px 140px 10px; 
-            background: var(--bg-body); 
-            margin: 0; 
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+        body {
+            background-color: var(--bg-primary);
             color: var(--text-main);
-            -webkit-font-smoothing: antialiased;
-            transition: background 0.3s ease, color 0.3s ease;
-            -webkit-user-select: none;
-            user-select: none;
-        }
-
-        /* GİRİŞ & ŞİFRE MODALI */
-        .auth-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(11, 19, 41, 0.88);
-            backdrop-filter: blur(8px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            padding: 15px;
-            box-sizing: border-box;
-        }
-
-        .auth-card {
-            background: var(--card-bg);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            width: 100%;
-            max-width: 380px;
-            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
-            border: 1px solid var(--border-color);
-        }
-
-        .auth-card h2 { font-size: 20px; font-weight: 900; margin: 0 0 4px 0; color: var(--purple); text-align: center; }
-        .auth-card p { font-size: 11px; color: var(--text-muted); text-align: center; margin: 0 0 16px 0; }
-
-        .auth-tabs { display: flex; gap: 4px; margin-bottom: 12px; background: var(--input-bg); padding: 3px; border-radius: 6px; }
-        .auth-tab-btn { flex: 1; padding: 6px; font-size: 11px; font-weight: 700; border: none; background: transparent; color: var(--text-muted); cursor: pointer; border-radius: 4px; }
-        .auth-tab-btn.active { background: var(--card-bg); color: var(--purple); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-
-        /* ÜST BAR */
-        .top-bar {
-            max-width: 1100px;
-            margin: 0 auto 12px auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .top-left-actions { display: flex; gap: 8px; }
-
-        .btn-top-action {
-            width: auto; background: var(--card-bg); border: 1px solid var(--border-color);
-            color: var(--text-main); padding: 6px 12px; border-radius: 20px; cursor: pointer;
-            font-size: 12px; font-weight: 600; margin: 0; transition: all 0.2s ease;
-        }
-        .btn-top-action:hover { border-color: var(--purple); }
-
-        .brand-right-box { text-align: right; }
-        .brand-right-box h1 {
-            font-size: 26px; font-weight: 900; margin: 0;
-            background: linear-gradient(135deg, #a78bfa 0%, #60a5fa 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            letter-spacing: -1px; text-transform: uppercase; line-height: 1;
-        }
-        .brand-right-box .sub-title { font-size: 9px; font-weight: 800; color: #a78bfa; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; display: block; }
-        .live-datetime { font-size: 10px; font-weight: 600; color: var(--text-muted); margin-top: 3px; display: block; }
-
-        .main-wrapper { max-width: 1100px; margin: 0 auto; }
-
-        /* DASHBOARD MODÜL KARTLARI */
-        .dashboard-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 16px;
-            margin-top: 10px;
-        }
-
-        .module-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-lg);
             padding: 20px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: var(--shadow-md);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container { width: 100%; max-width: 800px; }
+
+        /* Header */
+        .portal-header {
+            text-align: center;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 25px 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             position: relative;
             overflow: hidden;
         }
-        .module-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--purple);
-            box-shadow: 0 12px 24px -6px rgba(139, 92, 246, 0.2);
-        }
-        .module-icon { font-size: 32px; margin-bottom: 10px; display: block; }
-        .module-title { font-size: 16px; font-weight: 800; margin-bottom: 6px; color: var(--text-main); }
-        .module-desc { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
-        .module-badge {
-            position: absolute; top: 15px; right: 15px;
-            background: rgba(139, 92, 246, 0.15); color: #a78bfa;
-            font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 12px;
+
+        .portal-header::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
         }
 
-        .module-container { display: none; }
-        .module-container.active { display: block; }
-
-        .nav-back-btn {
-            background: var(--card-bg); border: 1px solid var(--border-color);
-            color: var(--text-main); padding: 8px 14px; border-radius: var(--radius-md);
-            font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex;
-            align-items: center; gap: 6px; margin-bottom: 12px;
+        .emblem-container {
+            width: 60px; height: 60px; background: #0b1329; border: 2px solid var(--accent-gold);
+            border-radius: 16px; margin: 0 auto 12px auto; display: flex; align-items: center;
+            justify-content: center; box-shadow: 0 0 20px var(--primary-glow);
         }
-        .nav-back-btn:hover { border-color: var(--purple); color: #a78bfa; }
 
-        /* FIT FORM & GENEL FORM ELEMANLARI */
-        .app-container { display: grid; grid-template-columns: 1fr; gap: 16px; align-items: start; }
-        @media (min-width: 880px) { .app-container { grid-template-columns: 340px 1fr; } }
+        .emblem-container svg { width: 35px; height: 35px; }
 
-        .card { background: var(--card-bg); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--border-color); overflow: hidden; }
-        .card-body { padding: 14px 16px; }
-        .card-img { width: 100%; height: 80px; object-fit: cover; display: block; }
+        .portal-title { font-size: 1.6rem; font-weight: 800; letter-spacing: 2px; color: var(--text-main); }
+        .portal-title span { color: var(--accent-gold); }
+        .portal-subtitle { font-size: 0.85rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
 
-        label { font-weight: 600; font-size: 11px; color: var(--text-main); display: block; margin-top: 5px; }
-        input, select, button, textarea { 
-            width: 100%; font-family: 'Inter', sans-serif; margin: 2px 0 5px 0; padding: 7px 9px; 
-            box-sizing: border-box; border: 1.5px solid var(--border-color); border-radius: var(--radius-md); 
-            font-size: 12px; background-color: var(--input-bg); color: var(--text-main); transition: all 0.2s ease;
+        /* Navigation Tabs */
+        .tabs { display: flex; gap: 10px; margin-bottom: 25px; }
+        .tab-btn {
+            flex: 1; padding: 14px 10px; background: var(--bg-card); border: 1px solid var(--border-color);
+            color: var(--text-muted); border-radius: 14px; font-weight: 700; font-size: 0.9rem;
+            cursor: pointer; transition: all 0.3s; text-align: center;
         }
-        input:focus, select:focus, textarea:focus { border-color: var(--primary); background-color: var(--card-bg); outline: none; }
+        .tab-btn.active { background: var(--accent-gold); color: #0f172a; border-color: var(--accent-gold); }
 
-        .btn-submit { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; font-weight: 700; cursor: pointer; margin-top: 8px; padding: 10px; border-radius: var(--radius-md); font-size: 13px; }
-        .btn-pdf { background: linear-gradient(135deg, #e11d48 0%, #be123c 100%); color: white; border: none; font-weight: 700; cursor: pointer; margin-top: 8px; padding: 9px; border-radius: var(--radius-md); font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .btn-wa { background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); color: white; border: none; font-weight: 700; cursor: pointer; margin-top: 5px; padding: 9px; border-radius: var(--radius-md); font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; }
-        .counter-btn { background: var(--primary); color: white; border: none; padding: 4px 8px; font-size: 11px; border-radius: 4px; cursor: pointer; margin-top: 4px; }
-        .btn-reset { background: #ef4444; color: white; border: none; padding: 6px 10px; font-size: 11px; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 6px; font-weight: 700; }
+        /* Card Sections */
+        .content-card {
+            background: var(--bg-card); border: 1px solid var(--border-color);
+            border-radius: 20px; padding: 25px; margin-bottom: 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            display: none;
+        }
+        .content-card.active { display: block; }
 
-        .tabs-nav { display: flex; gap: 6px; margin-bottom: 12px; background: var(--input-bg); padding: 4px; border-radius: var(--radius-md); border: 1px solid var(--border-color); }
-        .tab-btn { flex: 1; padding: 8px 4px; font-size: 11px; font-weight: 700; border: none; background: transparent; color: var(--text-muted); border-radius: 6px; cursor: pointer; margin: 0; text-align: center; }
-        .tab-btn.active { background: var(--card-bg); color: var(--primary-dark); box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
-        body.dark-theme .tab-btn.active { color: #34d399; }
-        .tab-content { display: none; } .tab-content.active { display: block; }
+        .section-title { font-size: 1.25rem; font-weight: 700; color: var(--accent-gold); margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .section-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; }
 
-        .accordion-item { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 10px; overflow: hidden; }
-        .accordion-header { width: 100%; background: var(--card-bg); color: var(--text-main); padding: 12px 14px; font-size: 13px; font-weight: 700; text-align: left; border: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .accordion-content { display: none; padding: 14px; border-top: 1px solid var(--border-color); background: var(--card-bg); }
+        /* Meal Grid */
+        .meal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 15px; margin-top: 15px; }
+        .meal-box {
+            background: #0f172a; border: 1px solid var(--border-color); border-radius: 14px; padding: 16px;
+        }
+        .meal-box h4 { color: var(--accent-blue); font-size: 1rem; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .meal-box ul { list-style: none; padding-left: 0; }
+        .meal-box li { font-size: 0.88rem; color: var(--text-main); margin-bottom: 6px; padding-left: 14px; position: relative; }
+        .meal-box li::before { content: "•"; color: var(--accent-gold); position: absolute; left: 0; font-weight: bold; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 8px; margin-bottom: 12px; }
-        .stat-box { background: var(--input-bg); padding: 8px; border-radius: var(--radius-md); text-align: center; border: 1px solid var(--border-color); }
-        .stat-box .title { font-size: 10px; color: var(--text-muted); font-weight: 600; }
-        .stat-box .val { font-weight: 800; font-size: 14px; color: var(--primary-dark); margin-top: 2px; }
-        body.dark-theme .stat-box .val { color: #34d399; }
-        .macro-card { background: var(--input-bg); border-radius: var(--radius-md); padding: 10px 12px; border: 1px solid var(--border-color); margin-bottom: 8px; }
-        .macro-row { display: flex; justify-content: space-between; align-items: center; margin: 6px 0; font-size: 13px; }
+        /* Exercise List & Filters */
+        .filter-group { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; }
+        .filter-chip {
+            padding: 8px 14px; background: #0f172a; border: 1px solid var(--border-color);
+            border-radius: 20px; font-size: 0.8rem; color: var(--text-muted); cursor: pointer; white-space: nowrap;
+        }
+        .filter-chip.active { background: var(--accent-blue); color: #0f172a; font-weight: 700; border-color: var(--accent-blue); }
 
-        /* PORSİYON VE EGZERSİZ TABLOLARI */
-        .meal-split-card { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 10px; margin-bottom: 8px; }
-        .meal-split-title { font-size: 12px; font-weight: 800; color: var(--primary-dark); margin-bottom: 4px; }
-        body.dark-theme .meal-split-title { color: #34d399; }
-        .ex-list { padding-left: 18px; margin: 4px 0; font-size: 12px; line-height: 1.5; }
-        .ex-warning { background: rgba(239, 68, 68, 0.1); border-left: 3px solid #ef4444; padding: 6px 10px; font-size: 11px; border-radius: 4px; margin-bottom: 8px; color: #ef4444; font-weight: 600; }
+        .exercise-list { display: grid; gap: 12px; }
+        .exercise-item {
+            background: #0f172a; border: 1px solid var(--border-color); border-radius: 12px; padding: 14px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .ex-info h5 { font-size: 0.95rem; color: var(--text-main); margin-bottom: 3px; }
+        .ex-info p { font-size: 0.8rem; color: var(--text-muted); }
+        .ex-tag {
+            padding: 4px 10px; border-radius: 8px; font-size: 0.75rem; font-weight: 700;
+            background: rgba(56, 189, 248, 0.15); color: var(--accent-blue); border: 1px solid rgba(56, 189, 248, 0.3);
+        }
 
-        /* RUH HALİ STİLLERİ */
-        .mood-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin: 12px 0; }
-        .mood-btn { background: var(--card-bg); border: 2px solid var(--border-color); border-radius: var(--radius-md); padding: 12px 8px; text-align: center; cursor: pointer; transition: all 0.2s ease; }
-        .mood-btn:hover, .mood-btn.active { border-color: var(--purple); background: rgba(139, 92, 246, 0.08); transform: scale(1.02); }
-        .mood-emoji { font-size: 26px; display: block; margin-bottom: 4px; }
-        .mood-label { font-size: 11px; font-weight: 700; color: var(--text-main); }
-        .mood-result-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 14px; box-shadow: var(--shadow-md); }
-        .mood-quote { font-size: 13px; font-weight: 700; color: var(--purple); font-style: italic; margin-bottom: 10px; line-height: 1.4; border-left: 3px solid var(--purple); padding-left: 10px; }
-        .mood-section-title { font-size: 11px; font-weight: 800; color: var(--secondary); text-transform: uppercase; margin: 10px 0 4px 0; }
-        .share-prompt-box { background: var(--input-bg); border: 1px dashed var(--purple); border-radius: var(--radius-md); padding: 12px; margin-top: 12px; }
-        .share-prompt-box h4 { margin: 0 0 6px 0; font-size: 12px; color: #a78bfa; font-weight: 800; }
-        .psychology-card { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; margin-top: 12px; }
-        .psychology-title { font-size: 13px; font-weight: 800; color: #a78bfa; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-        .scholar-card { background: var(--card-bg); border-left: 3px solid var(--purple); border-radius: 6px; padding: 10px 12px; margin-top: 8px; border: 1px solid var(--border-color); border-left-width: 3px; }
-        .scholar-name { font-size: 11px; font-weight: 800; color: #60a5fa; margin-bottom: 2px; }
-        .scholar-quote { font-size: 11px; color: var(--text-main); font-style: italic; line-height: 1.4; }
-
-        /* GÜNLÜK MİMARİSİ */
-        .journal-grid { display: grid; grid-template-columns: 1fr; gap: 14px; }
-        @media (min-width: 768px) { .journal-grid { grid-template-columns: 1fr 1fr; } }
-        .journal-entry-card { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 12px; margin-bottom: 10px; }
-        .journal-date { font-size: 11px; font-weight: 800; color: var(--purple); display: flex; justify-content: space-between; margin-bottom: 6px; }
-
-        /* AJANDA STİLLERİ */
-        .agenda-table { width: 100%; border-collapse: collapse; margin-top: 8px; }
-        .agenda-table th, .agenda-table td { border: 1px solid var(--border-color); padding: 6px 8px; font-size: 11px; text-align: left; }
-        .agenda-table th { background: var(--input-bg); color: var(--purple); font-weight: 800; width: 70px; }
-        .agenda-time-cell { font-weight: 700; color: var(--text-muted); text-align: center; }
-        .agenda-task-item { background: rgba(59, 130, 246, 0.1); border-left: 3px solid var(--secondary); padding: 4px 8px; border-radius: 4px; margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; font-size: 11px; }
-        .agenda-task-item.completed { text-decoration: line-through; opacity: 0.5; border-left-color: var(--primary); }
-
-        /* HABIT & ITEM STİLLERİ */
-        .habit-item { display: flex; align-items: center; justify-content: space-between; background: var(--input-bg); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: var(--radius-md); margin-bottom: 6px; }
-        .habit-streak { font-size: 10px; font-weight: 800; color: var(--amber); background: rgba(245, 158, 11, 0.1); padding: 2px 6px; border-radius: 10px; }
-
-        /* AKIL ÇEREZİ STİLLERİ */
-        .snack-card { background: var(--input-bg); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 16px; margin-bottom: 12px; }
-        .snack-tag { font-size: 9px; font-weight: 800; text-transform: uppercase; background: rgba(139, 92, 246, 0.15); color: var(--purple); padding: 3px 8px; border-radius: 10px; display: inline-block; margin-bottom: 6px; }
-
-        /* PROGRESS BAR */
-        .progress-bar-container { background: var(--border-color); height: 8px; border-radius: 4px; overflow: hidden; margin-top: 4px; }
-        .progress-bar-fill { background: linear-gradient(90deg, #10b981 0%, #3b82f6 100%); height: 100%; transition: width 0.3s ease; }
-
-        /* FOOTER */
-        .global-footer { position: fixed; bottom: 0; left: 0; width: 100%; background: var(--card-bg); border-top: 1px solid var(--border-color); padding: 8px 16px; box-shadow: 0 -4px 16px rgba(0,0,0,0.1); display: flex; flex-direction: row; justify-content: space-between; align-items: center; z-index: 1000; box-sizing: border-box; backdrop-filter: blur(8px); }
-        .footer-disclaimer { font-size: 10px; color: var(--text-muted); max-width: 600px; line-height: 1.2; }
-        .footer-copyright { font-size: 11px; color: var(--text-main); font-weight: 700; text-align: right; }
-        .footer-copyright span { font-size: 9px; color: var(--text-muted); font-weight: 400; display: block; }
-        .feedback-trigger-btn { background: var(--input-bg); border: 1px solid var(--border-color); color: var(--secondary); font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 4px; cursor: pointer; margin-top: 2px; }
-        .feedback-modal { display: none; position: fixed; bottom: 50px; right: 20px; background: var(--card-bg); border: 1px solid var(--border-color); padding: 12px; border-radius: var(--radius-md); box-shadow: var(--shadow-md); width: 280px; z-index: 1001; }
+        /* Footer */
+        .creator-footer {
+            margin-top: 30px; text-align: center; font-size: 0.8rem; color: var(--text-muted);
+            letter-spacing: 1.5px; border-top: 1px solid var(--border-color); padding-top: 20px; width: 100%;
+        }
+        .creator-footer strong { color: var(--accent-gold); }
     </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
 
-<!-- ŞİFRE & GİRİŞ MODAL PENCERESİ -->
-<div class="auth-overlay" id="authModal">
-    <div class="auth-card">
-        <h2>🏛️ YAŞAM MİMARİSİ</h2>
-        <p>Bütünsel Yaşam Portalı Güvenli Girişi</p>
+    <div class="container">
+        <!-- Header -->
+        <header class="portal-header">
+            <div class="emblem-container">
+                <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="50" cy="50" r="38" fill="none" stroke="#d4af37" stroke-width="2.5" opacity="0.8"/>
+                    <rect x="32" y="34" width="8" height="32" fill="#d4af37" rx="2"/>
+                    <rect x="46" y="26" width="8" height="40" fill="#d4af37" rx="2"/>
+                    <rect x="60" y="34" width="8" height="32" fill="#d4af37" rx="2"/>
+                </svg>
+            </div>
+            <h1 class="portal-title">YAŞAM <span>MİMARİSİ</span></h1>
+            <p class="portal-subtitle">Fit-Form & Çeşitlendirilmiş Performans Portalı</p>
+        </header>
 
-        <div class="auth-tabs">
-            <button class="auth-tab-btn active" id="btnTabLogin" onclick="switchAuthMode('login')">🔑 Giriş Yap</button>
-            <button class="auth-tab-btn" id="btnTabRegister" onclick="switchAuthMode('register')">📝 Yeni Kayıt</button>
-            <button class="auth-tab-btn" id="btnTabForgot" onclick="switchAuthMode('forgot')">🔄 Şifre Sıfırla</button>
+        <!-- Tab Buttons -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchSection('nutrition', event)">🥗 Esnek Beslenme Paneli</button>
+            <button class="tab-btn" onclick="switchSection('exercises', event)">🏋️ Hareket Kütüphanesi</button>
         </div>
 
-        <div id="formLogin">
-            <label for="loginUserCode">Kullanıcı Kodu</label>
-            <input type="text" id="loginUserCode" placeholder="Örn: KEMAL123">
-            <label for="loginPassword">Şifre</label>
-            <input type="password" id="loginPassword" placeholder="******">
-            <button class="btn-submit" style="margin-top:12px; background:var(--purple);" onclick="handleLogin()">GİRİŞ YAP</button>
-        </div>
+        <!-- SEKTÖR 1: ÇEŞİTLENDİRİLMİŞ BESLENME ÖNERİLERİ -->
+        <div id="nutrition" class="content-card active">
+            <div class="section-title">🥗 Alternatifli Örnek Öğün Rehberi</div>
+            <div class="section-subtitle">Sadece tavuk ve yumurtaya bağlı kalmadan yüksek protein ve dengeli karbonhidrat alternatifleri:</div>
 
-        <div id="formRegister" style="display:none;">
-            <label for="regUserCode">Kullanıcı Kodu Belirleyin</label>
-            <input type="text" id="regUserCode" placeholder="Örn: KEMAL123">
-            <label for="regPassword">Şifre Belirleyin</label>
-            <input type="password" id="regPassword" placeholder="******">
-            <label for="regSecQuestion">Güvenlik Sorusu</label>
-            <select id="regSecQuestion">
-                <option value="pet">İlk evcil hayvanınızın adı nedir?</option>
-                <option value="school">İlkokul öğretmeninizin adı nedir?</option>
-                <option value="city">Doğduğunuz şehir neresidir?</option>
-            </select>
-            <label for="regSecAnswer">Yanıtı</label>
-            <input type="text" id="regSecAnswer" placeholder="Yanıtınız">
-            <button class="btn-submit" style="margin-top:12px; background:var(--purple);" onclick="handleRegister()">KAYDI TAMAMLA VE GİRİŞ YAP</button>
-        </div>
-
-        <div id="formForgot" style="display:none;">
-            <label for="forgotUserCode">Kullanıcı Kodu</label>
-            <input type="text" id="forgotUserCode">
-            <label for="forgotSecQuestion">Güvenlik Sorunuz</label>
-            <select id="forgotSecQuestion">
-                <option value="pet">İlk evcil hayvanınızın adı nedir?</option>
-                <option value="school">İlkokul öğretmeninizin adı nedir?</option>
-                <option value="city">Doğduğunuz şehir neresidir?</option>
-            </select>
-            <label for="forgotSecAnswer">Yanıtı</label>
-            <input type="text" id="forgotSecAnswer">
-            <label for="newResetPassword" style="color:var(--purple); font-weight:800; margin-top:8px;">YENİ ŞİFRE</label>
-            <input type="password" id="newResetPassword">
-            <button class="btn-submit" style="margin-top:12px; background:var(--secondary);" onclick="handleForgotPassword()">ŞİFREMİ GÜNCELLE & GİRİŞ YAP</button>
-        </div>
-    </div>
-</div>
-
-<!-- ÜST BAR -->
-<div class="top-bar">
-    <div class="top-left-actions">
-        <button class="btn-top-action" onclick="logoutApp()" style="color:#ef4444;">🔒 Oturumu Kapat</button>
-        <button class="btn-top-action" onclick="toggleTheme()" id="themeBtn">🌙 Karanlık Mod</button>
-    </div>
-    
-    <div class="brand-right-box">
-        <h1>🏛️ YAŞAM MİMARİSİ</h1>
-        <span class="sub-title">Bütünsel Gelişim Portalı</span>
-        <span class="live-datetime" id="liveDateTime">📅 Yükleniyor...</span>
-    </div>
-</div>
-
-<div class="main-wrapper">
-
-    <!-- 0. ANA DASHBOARD (MODÜL SEÇİM EKRANI) -->
-    <div id="modDashboard" class="module-container active">
-        <div style="background:var(--card-bg); padding:16px; border-radius:var(--radius-lg); border:1px solid var(--border-color); margin-bottom:12px;">
-            <h2 style="margin:0 0 4px 0; font-size:18px; color:#a78bfa;">Hoş Geldiniz 👋</h2>
-            <p style="margin:0; font-size:12px; color:var(--text-muted);">Bugün yaşamınızın hangi alanını mimarlamak istersiniz?</p>
-        </div>
-
-        <div class="dashboard-grid">
-            <!-- MODÜL 1: FIT FORM -->
-            <div class="module-card" onclick="openModule('modFitForm')">
-                <span class="module-badge">Ana Modül</span>
-                <span class="module-icon">⚡</span>
-                <div class="module-title">FIT FORM</div>
-                <div class="module-desc">Performans, Beslenme, Makro/Kalori Hesabı, Antrenman Planlama & Egzersiz Rehberi.</div>
-            </div>
-
-            <!-- MODÜL 2: GÜNLÜK ENERJİ DURUMUNUZ -->
-            <div class="module-card" onclick="openModule('modMood')">
-                <span class="module-badge" style="background:rgba(59,130,246,0.15); color:#60a5fa;">Aktif</span>
-                <span class="module-icon">🧘‍♂️</span>
-                <div class="module-title">GÜNLÜK ENERJİ DURUMUNUZ</div>
-                <div class="module-desc">Zihinsel dengelenme, nefes egzersizleri, mini psikolojik destek & kadim rehberlik.</div>
-            </div>
-
-            <!-- MODÜL 3: GÜNLÜK MİMARİSİ -->
-            <div class="module-card" onclick="openModule('modJournal')">
-                <span class="module-badge" style="background:rgba(16,185,129,0.15); color:#34d399;">Aktif</span>
-                <span class="module-icon">📖</span>
-                <div class="module-title">GÜNLÜK MİMARİSİ</div>
-                <div class="module-desc">Günün Muhasebesi & Huzur Notları (Şükran, Zaferler, Dersler ve Kişisel Günlük Arşivi).</div>
-            </div>
-
-            <!-- MODÜL 4: ODAK & ZAMAN MİMARİSİ -->
-            <div class="module-card" onclick="openModule('modTime')">
-                <span class="module-badge" style="background:rgba(245,158,11,0.15); color:var(--amber);">Aktif</span>
-                <span class="module-icon">⏱️</span>
-                <div class="module-title">ODAK & ZAMAN MİMARİSİ</div>
-                <div class="module-desc">Derin Çalışma Pomodoro sayacı ve günlük alışkanlık takibi (Habit Tracker).</div>
-            </div>
-
-            <!-- MODÜL 5: HEDEF & RİTÜEL MİMARİSİ -->
-            <div class="module-card" onclick="openModule('modGoals')">
-                <span class="module-badge" style="background:rgba(139,92,246,0.15); color:#a78bfa;">Aktif</span>
-                <span class="module-icon">🎯</span>
-                <div class="module-title">HEDEF & RİTÜEL MİMARİSİ</div>
-                <div class="module-desc">Saatlik Ajanda, Ritüeller, Hedef Takibi (% Oranlı) & Ekonomik Performans.</div>
-            </div>
-
-            <!-- MODÜL 6: AKIL ÇEREZİ -->
-            <div class="module-card" onclick="openModule('modSnack')">
-                <span class="module-badge" style="background:rgba(244,63,94,0.15); color:var(--rose);">Yeni</span>
-                <span class="module-icon">🧠</span>
-                <div class="module-title">AKIL ÇEREZİ</div>
-                <div class="module-desc">15 dakikalık boşluklarda sosyal medya yerine zihni besleyen atıştırmalık bilgiler & özetler.</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 1. MODÜL: FIT FORM (DÜNKÜ TAM ZENGİN SÜRÜM) -->
-    <div id="modFitForm" class="module-container">
-        <button class="nav-back-btn" onclick="openModule('modDashboard')">⬅️ Ana Menüye Dön</button>
-        
-        <div class="app-container">
-            <!-- SOL PANEL: GİRDİ FORMU -->
-            <div class="card">
-                <img class="card-img" src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&w=800&q=80" alt="Fitness Training">
-                
-                <div class="card-body">
-                    <label for="savedProfilesSelect" style="color:var(--secondary);">💾 Kayıtlı Profiller</label>
-                    <select id="savedProfilesSelect" onchange="onProfileSelectChange()">
-                        <option value="">-- Kayıtlı Profil Seçin --</option>
-                    </select>
-
-                    <label for="fullName">Öğrenci / Danışan Adı Soyadı</label>
-                    <input type="text" id="fullName" placeholder="Örn: Ahmet Yılmaz">
-
-                    <label for="gender">Cinsiyet</label>
-                    <select id="gender"><option value="male">Erkek</option><option value="female">Kadın</option></select>
-
-                    <label for="goal">Ana Hedef</label>
-                    <select id="goal">
-                        <option value="fatloss">Yağ Yakımı / Kilo Ver (%20 Defisit)</option>
-                        <option value="maintain">Formu Koru (TDEE Dengesi)</option>
-                        <option value="muscle">Kas Yapımı / Kilo Al (+15% Sürplus)</option>
-                    </select>
-                    
-                    <div style="display:flex; gap:6px;">
-                        <div style="flex:1;"><label for="weight">Kilo (kg)</label><input type="number" id="weight" placeholder="75"></div>
-                        <div style="flex:1;"><label for="height">Boy (cm)</label><input type="number" id="height" placeholder="175"></div>
-                        <div style="flex:1;"><label for="age">Yaş</label><input type="number" id="age" placeholder="25"></div>
-                    </div>
-                    
-                    <label for="activity">Aktivite Seviyesi</label>
-                    <select id="activity">
-                        <option value="1.2">Masa Başı / Egzersiz Yok</option>
-                        <option value="1.375">Hafif Tempo (Haftada 1-3 gün)</option>
-                        <option value="1.55">Orta Tempo (Haftada 3-5 gün)</option>
-                        <option value="1.725">Yüksek Tempo (Haftada 6-7 gün)</option>
-                    </select>
-
-                    <label for="health">Sağlık & Postür Durumu</label>
-                    <select id="health">
-                        <option value="none">Sağlıklı / Engel Yok</option>
-                        <option value="pregnant">Hamilelik (Gebelik Dönemi)</option>
-                        <option value="heart">Kalp / Tansiyon Rahatsızlığı</option>
-                        <option value="diabetes">Diyabet / İnsülin Direnci</option>
-                        <option value="hernia">Bel / Boyun Fıtığı</option>
-                        <option value="scoliosis">Skolyoz / Kifoz</option>
-                        <option value="knee">Diz / Eklem Hassasiyeti</option>
-                    </select>
-
-                    <label for="trainerNote">Antrenörün Özel Notu</label>
-                    <textarea id="trainerNote" rows="2" placeholder="Örn: Su tüketimini aksatma..."></textarea>
-
-                    <button class="btn-submit" onclick="calculate()">PERFORMANS PLANIMI OLUŞTUR</button>
-                    
-                    <div style="display:flex; gap:6px; margin-top:4px;">
-                        <button class="counter-btn" style="flex:1; background:#3b82f6;" onclick="saveClientProfile()">💾 Profili Kaydet</button>
-                        <button class="counter-btn" style="flex:1; background:#ef4444;" onclick="deleteSelectedProfile()">🗑️ Profili Sil</button>
-                    </div>
-
-                    <button class="btn-pdf" id="btnPdfDownload" onclick="downloadPDF()" style="display:none;">📄 SONUÇLARI PDF İNDİR</button>
-                    <button class="btn-wa" id="btnWaShare" onclick="shareWhatsApp()" style="display:none;">📱 WHATSAPP PAYLAŞ</button>
-                </div>
-            </div>
-
-            <!-- SAĞ PANEL: DETAYLI DASHBOARD -->
-            <div>
-                <div class="tabs-nav">
-                    <button class="tab-btn active" onclick="switchTab('tabReport')">🎯 Kişisel Rapor</button>
-                    <button class="tab-btn" onclick="switchTab('tabTracking')">📊 Takip & Arşiv</button>
-                    <button class="tab-btn" onclick="switchTab('tabTools')">🧰 Asistan & Rehberler</button>
+            <div class="meal-grid">
+                <!-- Kahvaltı -->
+                <div class="meal-box">
+                    <h4>🌅 Kahvaltı Alternatifleri</h4>
+                    <ul>
+                        <li><strong>Seçenek A:</strong> 3 Yumurtalı + Lor Peynirli + Maydanozlu Menemen + 2 Dilim Tam Buğday Ekmeği.</li>
+                        <li><strong>Seçenek B:</strong> Yulaf Ezmesi (50g) + Süt/Yoğurt + 1 Çorba Kaşığı Fıstık Ezmesi + 1 Muz + Ceviz.</li>
+                        <li><strong>Seçenek C:</strong> Süzme Peynir + 3 Dilim Füme Hindi + Bol Yeşillik + Zeytin + Tam Buğday Tost.</li>
+                    </ul>
                 </div>
 
-                <div id="tabReport" class="tab-content active">
-                    <div id="pdfExportArea">
-                        <div class="accordion-item" id="accordionSec1">
-                            <button class="accordion-header" onclick="toggleAccordion(this)"><span>📊 Günlük Yakıt & Besin Tablonuz</span><span>▼</span></button>
-                            <div class="accordion-content"><div id="sec1Content"><p style="font-size:12px; color:var(--text-muted); margin:0;">Planınızı oluşturmak için bilgileri doldurunuz.</p></div></div>
-                        </div>
-                        <div class="accordion-item">
-                            <button class="accordion-header" onclick="toggleAccordion(this)"><span>🍽️ Öğün Porsiyon Bölüştürücü</span><span>▼</span></button>
-                            <div class="accordion-content">
-                                <select id="mealSplitSelect" onchange="renderMealSplit()">
-                                    <option value="3">3 Öğün</option><option value="4">4 Öğün</option><option value="5">5 Öğün</option><option value="2">2 Öğün (IF)</option>
-                                </select>
-                                <div id="mealSplitArea"></div>
-                                <div id="sec2Content"></div>
-                            </div>
-                        </div>
-                        <div class="accordion-item">
-                            <button class="accordion-header" onclick="toggleAccordion(this)"><span>📋 Antrenman Planı</span><span>▼</span></button>
-                            <div class="accordion-content"><div id="sec3Content"></div></div>
-                        </div>
-                    </div>
+                <!-- Öğle Yemeği -->
+                <div class="meal-box">
+                    <h4>☀️ Öğle Yemeği Alternatifleri</h4>
+                    <ul>
+                        <li><strong>Et/Köfte:</strong> 180g Izgara Yağsız Dana Köfte / Biftek + Basmati Pirinç Pilavı + Akdeniz Salata.</li>
+                        <li><strong>Balık:</strong> 200g Fırın Somon / Levrek + Fırınlanmış Baharatlı Patates + Bol Limonlu Roka Salata.</li>
+                        <li><strong>Bitkisel/Baklagil:</strong> 1 Kase Yeşil Mercimek Yemeği + Karabuğday (Greçka) Pilavı + Cacık.</li>
+                    </ul>
                 </div>
 
-                <div id="tabTracking" class="tab-content">
-                    <div class="accordion-item">
-                        <button class="accordion-header" onclick="toggleAccordion(this)"><span>🛒 Günlük Besin, Su & Kafein Takibi</span><span>▼</span></button>
-                        <div class="accordion-content">
-                            <div style="display:flex; gap:10px; margin-bottom:10px;">
-                                <div style="flex:1; text-align:center;"><label>İçilen Su: <b id="waterGlassCount">0</b> Bardak</label><button class="counter-btn" onclick="addWater()">+1 Bardak</button></div>
-                                <div style="flex:1; text-align:center;"><label>Kafein: <b id="caffeineCount">0</b> mg</label><button class="counter-btn" style="background:#f59e0b;" onclick="addCoffee()">+1 Kahve</button></div>
-                            </div>
-                            <button class="btn-reset" onclick="resetTracker()">Sıfırla</button>
-                        </div>
-                    </div>
+                <!-- Akşam Yemeği -->
+                <div class="meal-box">
+                    <h4>🌙 Akşam Yemeği Alternatifleri</h4>
+                    <ul>
+                        <li><strong>Deniz Ürünü:</strong> Bol Zeytinyağlı Ton Balıklı (160g) Kinoa Salatası + Ceviz.</li>
+                        <li><strong>Tavuk/Hindi:</strong> 200g Sote Hindi Göğsü / Fırın Şiş + Haşlanmış Brokoli & Havuç + Zeytinyağı.</li>
+                        <li><strong>Kıymalı Baklagil:</strong> Kıymalı Nohut Yemeği + Bulgur Pilavı + Ev Yapımı Yoğurt.</li>
+                    </ul>
                 </div>
 
-                <div id="tabTools" class="tab-content">
-                    <div class="accordion-item">
-                        <button class="accordion-header" onclick="toggleAccordion(this)"><span>⏱️ Set Arası Zamanlayıcı</span><span>▼</span></button>
-                        <div class="accordion-content" style="text-align: center;">
-                            <div style="font-size:24px; font-weight:900; color:var(--primary);" id="timerCount">00:00</div>
-                            <button class="counter-btn" onclick="startTimer(60)">60 Sn Başlat</button>
-                            <button class="counter-btn" style="background:#ef4444;" onclick="stopTimer()">Durdur</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2. MODÜL: GÜNLÜK ENERJİ DURUMUNUZ -->
-    <div id="modMood" class="module-container">
-        <button class="nav-back-btn" onclick="openModule('modDashboard')">⬅️ Ana Menüye Dön</button>
-
-        <div class="card" style="padding: 16px;">
-            <h3 style="margin:0 0 6px 0; color:#a78bfa; font-size:16px;">🧘‍♂️ Bugünü Nasıl Hissediyorsunuz?</h3>
-            <p style="margin:0 0 12px 0; font-size:11px; color:var(--text-muted);">İçinde bulunduğunuz enerji durumunu seçin; anında zihinsel ve fiziksel rehberliğinizi alın.</p>
-
-            <div class="mood-grid">
-                <div class="mood-btn" onclick="selectEnergy('happy', this)"><span class="mood-emoji">😊</span><span class="mood-label">Mutlu & Neşeli</span></div>
-                <div class="mood-btn" onclick="selectEnergy('stressed', this)"><span class="mood-emoji">😫</span><span class="mood-label">Stresli / Yorgun</span></div>
-                <div class="mood-btn" onclick="selectEnergy('anxious', this)"><span class="mood-emoji">😰</span><span class="mood-label">Kaygılı / Endişeli</span></div>
-                <div class="mood-btn" onclick="selectEnergy('focused', this)"><span class="mood-emoji">⚡</span><span class="mood-label">Odaklı / Enerjik</span></div>
-                <div class="mood-btn" onclick="selectEnergy('sad', this)"><span class="mood-emoji">😔</span><span class="mood-label">Üzgün / İsteksiz</span></div>
-            </div>
-
-            <div id="baseAdviceArea" style="display:none;"></div>
-
-            <div id="sharePromptArea" class="share-prompt-box" style="display:none;">
-                <h4>💬 Benimle Paylaşmak İster Misin? (Mini Psikolog Desteği)</h4>
-                <p style="font-size:11px; color:var(--text-muted); margin:0 0 6px 0;">Seni bu şekilde hissettiren konuyu kısaca yaz; sana özel psikolojik yaklaşım ve kadim alimlerin düşüncelerini getirelim:</p>
-                <textarea id="userEnergyNote" rows="2" placeholder="Örn: İş yerindeki yoğunluk zihnimi çok yordu..."></textarea>
-                <button class="btn-submit" style="background:var(--purple); margin-top:4px;" onclick="generatePsychologicalSupport()">PSİKOLOJİK RAHATLAMA & ÖNERİLERİ AL ✨</button>
-            </div>
-
-            <div id="psychologyResultArea" style="display:none; margin-top:14px;"></div>
-        </div>
-    </div>
-
-    <!-- 3. MODÜL: GÜNLÜK MİMARİSİ -->
-    <div id="modJournal" class="module-container">
-        <button class="nav-back-btn" onclick="openModule('modDashboard')">⬅️ Ana Menüye Dön</button>
-
-        <div class="card" style="padding: 16px;">
-            <h3 style="margin:0 0 6px 0; color:#34d399; font-size:16px;">📖 Günlük Mimarisi (Günün Muhasebesi & Huzur Notları)</h3>
-            <p style="margin:0 0 16px 0; font-size:11px; color:var(--text-muted);">İçinizi dökün, günün güzel anlarını çapalayın ve kişisel gelişiminizi kayıt altına alın.</p>
-
-            <div class="journal-grid">
-                <div>
-                    <h4 style="margin:0 0 8px 0; font-size:13px; color:var(--purple);">✨ Bugünkü Gönül & Huzur Kaydınız</h4>
-
-                    <label for="jGratitude">🌱 Bugüne Dair Teşekkür & Huzur Sebeplerim (3 Şey)</label>
-                    <textarea id="jGratitude" rows="2" placeholder="1. Sabahki taze kahve kokusu&#10;2. Ailemle güzel bir sohbet&#10;3. Tamamladığım iş..."></textarea>
-
-                    <label for="jVictory">🏆 Bugünün Zaferleri & İyi Yaptıklarım</label>
-                    <textarea id="jVictory" rows="2" placeholder="Örn: Zor bir görevi tamamladım, sporuma gittim..."></textarea>
-
-                    <label for="jLesson">💡 Bugünün Muhasebesi (Öğrendiğim Dersler)</label>
-                    <textarea id="jLesson" rows="1" placeholder="Örn: Acele etmek yerine adımları planlamak daha verimli."></textarea>
-
-                    <label for="jHighlight">🌟 Günün Serbest İz Bırakanı (İç Dökme & Notlar)</label>
-                    <textarea id="jHighlight" rows="3" placeholder="Aklınıza gelen serbest düşünceler, hisler veya özel anlar..."></textarea>
-
-                    <button class="btn-submit" style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); margin-top:8px;" onclick="saveJournalEntry()">💾 BUGÜNKÜ GÜNLÜĞÜ KAYDET</button>
-                </div>
-
-                <div>
-                    <h4 style="margin:0 0 8px 0; font-size:13px; color:#60a5fa;">📚 Günlük Arşiviniz & İzleriniz</h4>
-                    <div id="journalArchiveList" style="max-height:420px; overflow-y:auto; padding-right:4px;">
-                        <p style="font-size:11px; color:var(--text-muted);">Henüz kaydedilmiş bir günlük bulunmuyor.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. MODÜL: ODAK & ZAMAN MİMARİSİ -->
-    <div id="modTime" class="module-container">
-        <button class="nav-back-btn" onclick="openModule('modDashboard')">⬅️ Ana Menüye Dön</button>
-
-        <div class="card" style="padding: 16px;">
-            <h3 style="margin:0 0 6px 0; color:var(--amber); font-size:16px;">⏱️ Odak & Zaman Mimarisi</h3>
-            <p style="margin:0 0 16px 0; font-size:11px; color:var(--text-muted);">Zamanınızı yüksek verimlilikle yönetin ve alışkanlıklarınızı sürdürülebilir kılın.</p>
-
-            <div class="journal-grid">
-                <div>
-                    <h4 style="margin:0 0 8px 0; font-size:13px; color:var(--amber);">⚡ Derin Çalışma (Pomodoro Sayacı)</h4>
-                    <div style="background:var(--input-bg); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:20px; text-align:center;">
-                        <div style="font-size:42px; font-weight:900; color:var(--amber);" id="pomoDisplay">25:00</div>
-                        <div style="display:flex; gap:8px; justify-content:center; margin-top:12px;">
-                            <button class="counter-btn" style="background:var(--amber); padding:8px 16px; font-size:12px;" onclick="startPomodoro(25)">▶ Odak (25 Dk)</button>
-                            <button class="counter-btn" style="background:var(--primary); padding:8px 16px; font-size:12px;" onclick="startPomodoro(5)">☕ Mola (5 Dk)</button>
-                            <button class="counter-btn" style="background:#ef4444; padding:8px 16px; font-size:12px;" onclick="stopPomodoro()">⏹ Sıfırla</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <h4 style="margin:0 0 8px 0; font-size:13px; color:var(--primary);">🔥 Günlük Alışkanlık Takibi (Habit Tracker)</h4>
-                    <div style="display:flex; gap:6px; margin-bottom:10px;">
-                        <input type="text" id="newHabitInput" placeholder="Yeni alışkanlık ekle (Örn: 2 Litre Su)..." style="margin:0;">
-                        <button class="counter-btn" style="width:auto; padding:0 12px; margin:0;" onclick="addHabit()">+ Ekle</button>
-                    </div>
-                    <div id="habitListArea"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 5. MODÜL: HEDEF & RİTÜEL MİMARİSİ -->
-    <div id="modGoals" class="module-container">
-        <button class="nav-back-btn" onclick="openModule('modDashboard')">⬅️ Ana Menüye Dön</button>
-
-        <div class="card" style="padding: 16px;">
-            <h3 style="margin:0 0 6px 0; color:#a78bfa; font-size:16px;">🎯 Hedef, Ritüel & Finans Mimarisi</h3>
-            <p style="margin:0 0 16px 0; font-size:11px; color:var(--text-muted);">Zaman planlama, özel ritüeller, hedef gerçekleşme oranları ve rutin bütçe yönetimi.</p>
-
-            <div class="tabs-nav">
-                <button class="tab-btn active" onclick="switchGoalTab('tabAgenda')">📅 Ajanda (Outlook)</button>
-                <button class="tab-btn" onclick="switchGoalTab('tabRoutines')">🌅 Ritüeller (Max 5)</button>
-                <button class="tab-btn" onclick="switchGoalTab('tabVision')">🚀 Hedef & Vizyon (% Oran)</button>
-                <button class="tab-btn" onclick="switchGoalTab('tabFinance')">💳 Ekonomik Performans</button>
-            </div>
-
-            <!-- TAB 1: GÜNLÜK AJANDA -->
-            <div id="tabAgenda" class="goal-tab-content" style="display:block;">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                    <h4 style="margin:0; font-size:13px; color:var(--purple);">🕒 Bugünün Saatlik Zaman Planı</h4>
-                    <span style="font-size:11px; color:var(--text-muted);" id="agendaDateTitle"></span>
-                </div>
-
-                <div style="display:flex; gap:6px; margin-bottom:12px; background:var(--input-bg); padding:8px; border-radius:var(--radius-md); border:1px solid var(--border-color);">
-                    <select id="agendaHourSelect" style="width:110px; margin:0;">
-                        <option value="06:00">06:00 - 07:00</option><option value="07:00">07:00 - 08:00</option>
-                        <option value="08:00">08:00 - 09:00</option><option value="09:00">09:00 - 10:00</option>
-                        <option value="10:00">10:00 - 11:00</option><option value="11:00">11:00 - 12:00</option>
-                        <option value="12:00">12:00 - 13:00</option><option value="13:00">13:00 - 14:00</option>
-                        <option value="14:00">14:00 - 15:00</option><option value="15:00">15:00 - 16:00</option>
-                        <option value="16:00">16:00 - 17:00</option><option value="17:00">17:00 - 18:00</option>
-                        <option value="18:00">18:00 - 19:00</option><option value="19:00">19:00 - 20:00</option>
-                        <option value="20:00">20:00 - 21:00</option><option value="21:00">21:00 - 22:00</option>
-                        <option value="22:00">22:00 - 23:00</option>
-                    </select>
-                    <input type="text" id="agendaTaskInput" placeholder="Plan / Toplantı / Görev yazın..." style="margin:0;">
-                    <button class="counter-btn" style="width:auto; padding:0 14px; margin:0; background:var(--purple);" onclick="addAgendaTask()">+ Planla</button>
-                </div>
-
-                <table class="agenda-table">
-                    <thead><tr><th>Saat</th><th>Planlanan Aktivite / Görevler</th></tr></thead>
-                    <tbody id="agendaTableBody"></tbody>
-                </table>
-            </div>
-
-            <!-- TAB 2: RİTÜELLER -->
-            <div id="tabRoutines" class="goal-tab-content" style="display:none;">
-                <div class="journal-grid">
-                    <div style="background:var(--input-bg); padding:12px; border-radius:var(--radius-md); border:1px solid var(--border-color);">
-                        <h4 style="margin:0 0 8px 0; color:var(--amber);">☀️ Sabah Ritüelleriniz (Sizinki + Özel Eklenenler)</h4>
-                        <div id="morningRoutinesList"></div>
-                        <div style="display:flex; gap:6px; margin-top:10px;">
-                            <input type="text" id="newMorningRoutineInput" placeholder="Özel sabah ritüeli ekle (Max 5)..." style="margin:0;">
-                            <button class="counter-btn" style="width:auto; padding:0 12px; margin:0; background:var(--amber);" onclick="addCustomRoutine('morning')">+ Ekle</button>
-                        </div>
-                    </div>
-
-                    <div style="background:var(--input-bg); padding:12px; border-radius:var(--radius-md); border:1px solid var(--border-color);">
-                        <h4 style="margin:0 0 8px 0; color:var(--purple);">🌙 Gece Ritüelleriniz (Sizinki + Özel Eklenenler)</h4>
-                        <div id="eveningRoutinesList"></div>
-                        <div style="display:flex; gap:6px; margin-top:10px;">
-                            <input type="text" id="newEveningRoutineInput" placeholder="Özel gece ritüeli ekle (Max 5)..." style="margin:0;">
-                            <button class="counter-btn" style="width:auto; padding:0 12px; margin:0; background:var(--purple);" onclick="addCustomRoutine('evening')">+ Ekle</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- TAB 3: HEDEF & VİZYON PANOSU -->
-            <div id="tabVision" class="goal-tab-content" style="display:none;">
-                <div style="background:var(--input-bg); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:14px; margin-bottom:14px; text-align:center;">
-                    <div style="font-size:11px; color:var(--text-muted); font-weight:700;">🎯 GENEL HEDEF GERÇEKLEŞME ORANINIZ</div>
-                    <div style="font-size:28px; font-weight:900; color:var(--primary); margin:4px 0;" id="overallGoalProgressText">%0</div>
-                    <div class="progress-bar-container"><div class="progress-bar-fill" id="overallGoalProgressBar" style="width:0%;"></div></div>
-                </div>
-
-                <h4 style="margin:0 0 8px 0; font-size:13px; color:var(--secondary);">🚀 Dönemsel Hedefleriniz & İlerleme Durumu</h4>
-                <div style="display:flex; gap:6px; margin-bottom:10px;">
-                    <input type="text" id="newGoalInput" placeholder="Hedef adı (Örn: 3 Ayda İngilizce B2)..." style="margin:0; flex:2;">
-                    <input type="number" id="newGoalProgressInput" placeholder="% Başlangıç (Örn: 20)" style="margin:0; flex:1;" min="0" max="100">
-                    <button class="counter-btn" style="width:auto; padding:0 14px; margin:0; background:var(--secondary);" onclick="addGoal()">+ Hedef Ekle</button>
-                </div>
-                <div id="goalListArea"></div>
-            </div>
-
-            <!-- TAB 4: EKONOMİK PERFORMANS -->
-            <div id="tabFinance" class="goal-tab-content" style="display:none;">
-                <div class="stats-grid">
-                    <div class="stat-box"><div class="title">Toplam Rutin Gider</div><div class="val" id="finTotalAmount">0 TL</div></div>
-                    <div class="stat-box"><div class="title">Ödenen Miktar</div><div class="val" style="color:var(--primary);" id="finPaidAmount">0 TL</div></div>
-                    <div class="stat-box"><div class="title">Kalan Ödeme</div><div class="val" style="color:var(--rose);" id="finRemainingAmount">0 TL</div></div>
-                </div>
-
-                <div style="display:flex; gap:6px; margin-bottom:12px; background:var(--input-bg); padding:8px; border-radius:var(--radius-md); border:1px solid var(--border-color);">
-                    <input type="text" id="finTitleInput" placeholder="Ödeme Adı (Örn: Ev Kirası, Netflix)..." style="margin:0; flex:2;">
-                    <input type="number" id="finAmountInput" placeholder="Tutar (TL)" style="margin:0; flex:1;">
-                    <input type="number" id="finDayInput" placeholder="Ödeme Günü (1-31)" style="margin:0; flex:1;" min="1" max="31">
-                    <button class="counter-btn" style="width:auto; padding:0 14px; margin:0; background:var(--primary);" onclick="addFinanceItem()">+ Ekle</button>
-                </div>
-
-                <div id="financeListArea"></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 6. MODÜL: AKIL ÇEREZİ -->
-    <div id="modSnack" class="module-container">
-        <button class="nav-back-btn" onclick="openModule('modDashboard')">⬅️ Ana Menüye Dön</button>
-
-        <div class="card" style="padding: 16px;">
-            <h3 style="margin:0 0 4px 0; color:var(--rose); font-size:16px;">🧠 Akıl Çerezi (Atıştırmalık Bilgiler & Keşif)</h3>
-            <p style="margin:0 0 16px 0; font-size:11px; color:var(--text-muted);">Boş zamanlarında kaybolma; 15 dakikalık mola ile zihnini tazele ve eğlenerek öğren.</p>
-
-            <div class="tabs-nav">
-                <button class="tab-btn active" onclick="switchSnackTab('tabSnackCards')">📖 1 Dk'lık Akıl Kartları</button>
-                <button class="tab-btn" onclick="switchSnackTab('tabSnackBooks')">📚 3 Dk'lık Kitap Özetleri</button>
-                <button class="tab-btn" onclick="switchSnackTab('tabSnackRelax')">🧘‍♂️ Gizli Mola & Egzersiz</button>
-            </div>
-
-            <!-- TAB 1: MİKRO BİLGİ KARTLARI -->
-            <div id="tabSnackCards" class="snack-tab-content" style="display:block;">
-                <div class="snack-card">
-                    <span class="snack-tag" id="snackCardTag">Zihin & İllüzyon</span>
-                    <h4 style="margin:6px 0; font-size:14px; color:var(--text-main);" id="snackCardTitle">Yükleniyor...</h4>
-                    <p style="font-size:12px; line-height:1.5; color:var(--text-muted);" id="snackCardBody">Yükleniyor...</p>
-                    <button class="btn-submit" style="background:var(--purple); margin-top:10px; padding:6px 12px; font-size:11px;" onclick="nextSnackCard()">🎲 BAŞKA BİR AKIL ÇEREZİ GETİR</button>
-                </div>
-            </div>
-
-            <!-- TAB 2: 3 DAKİKALIK KİTAP ÖZETLERİ -->
-            <div id="tabSnackBooks" class="snack-tab-content" style="display:none;">
-                <div class="snack-card">
-                    <span class="snack-tag" style="background:rgba(59,130,246,0.15); color:var(--secondary);">Blinkist Mantığı</span>
-                    <h4 style="margin:6px 0; font-size:14px; color:var(--secondary);" id="snackBookTitle">Yükleniyor...</h4>
-                    <div style="font-size:12px; line-height:1.5; color:var(--text-main);" id="snackBookBody">Yükleniyor...</div>
-                    <button class="btn-submit" style="background:var(--secondary); margin-top:10px; padding:6px 12px; font-size:11px;" onclick="nextSnackBook()">📚 BAŞKA KİTAP ÖZETİ OKU</button>
-                </div>
-            </div>
-
-            <!-- TAB 3: GİZLİ MOLA & EGZERSİZLER -->
-            <div id="tabSnackRelax" class="snack-tab-content" style="display:none;">
-                <div class="snack-card">
-                    <span class="snack-tag" style="background:rgba(16,185,129,0.15); color:var(--primary);">Otobüste / Sırada Kimse Anlamadan</span>
-                    <h4 style="margin:6px 0; font-size:14px; color:var(--primary);">👀 2 Dakikalık Göz & Zihin Dinlendirme</h4>
-                    <ul style="font-size:12px; line-height:1.6; padding-left:18px; color:var(--text-main);">
-                        <li><b>20-20-20 Kuralı:</b> Ekrandan kafanı kaldır, 20 metre uzaktaki bir noktaya 20 saniye boyunca odaklan.</li>
-                        <li><b>Göz Dairesi:</b> Başını oynatmadan gözlerini saat yönünde 5 kez, sonra tersine 5 kez yavaşça döndür.</li>
-                        <li><b>Omuz Serbestliği:</b> Sırtını dikleştir, omuzlarını kulaklarına doğru çekip yavaşça geriye düşür. Derin bir nefes ver.</li>
+                <!-- Ara Öğünler -->
+                <div class="meal-box">
+                    <h4>🍏 Ara Öğün & Atıştırmalıklar</h4>
+                    <ul>
+                        <li>1 Su Bardağı Süzme Yoğurt + 1 Avuç Yaban Mersini / Çilek.</li>
+                        <li>1 Porsiyon Elma / Armut + 10 Adet Çiğ Badem veya Fındık.</li>
+                        <li>1 Ölçek Whey Protein (Süt ile) + 2 Adet Ceviz İçi.</li>
                     </ul>
                 </div>
             </div>
         </div>
+
+        <!-- SEKTÖR 2: GENİŞ HAREKET KÜTÜPHANESİ -->
+        <div id="exercises" class="content-card">
+            <div class="section-title">🏋️ Anatomi & Egzersiz Kütüphanesi</div>
+            <div class="section-subtitle">Kas grubuna göre filtrelenebilir detaylı hareket listesi:</div>
+
+            <!-- Filtreler -->
+            <div class="filter-group">
+                <div class="filter-chip active" onclick="filterEx('all', event)">Tüm Hareketler</div>
+                <div class="filter-chip" onclick="filterEx('gogus', event)">Göğüs</div>
+                <div class="filter-chip" onclick="filterEx('sirt', event)">Sırt</div>
+                <div class="filter-chip" onclick="filterEx('bacak', event)">Bacak</div>
+                <div class="filter-chip" onclick="filterEx('omuz', event)">Omuz</div>
+                <div class="filter-chip" onclick="filterEx('kol', event)">Kol</div>
+                <div class="filter-chip" onclick="filterEx('karin', event)">Karın & Core</div>
+            </div>
+
+            <!-- Hareket Listesi -->
+            <div class="exercise-list" id="exercise-container">
+                <!-- Javascript dinamik dolduracak -->
+            </div>
+        </div>
+
+        <footer class="creator-footer">
+            Design & Architecture by <strong>Kemal ERDAL</strong>
+        </footer>
     </div>
 
-</div>
-
-<!-- SABİTLENMİŞ FOOTER -->
-<footer class="global-footer">
-    <div class="footer-disclaimer">
-        <b>⚠️ Yasal Bilgilendirme:</b> Bu uygulama genel yaşam rehberliği sunar. Tıbbi veya psikolojik tedavi yerine geçmez.
-    </div>
-    
-    <div class="footer-copyright">
-        Hazırlayan: <b>Kemal ERDAL</b>
-        <span>© Tüm Hakları Saklıdır.</span>
-    </div>
-
-    <button class="feedback-trigger-btn" onclick="toggleFeedbackModal()">💬 Görüş Bildir</button>
-
-    <div class="feedback-modal" id="feedbackModal">
-        <h4 style="margin:0 0 6px 0; font-size:11px; color:var(--secondary);">Görüş & Öneriniz (Max 150 Karakter)</h4>
-        <textarea id="feedbackText" maxlength="150" style="height:50px; font-size:11px;" placeholder="Görüşünüzü yazın..."></textarea>
-        <button class="btn-submit" style="padding:4px; font-size:10px;" onclick="sendFeedbackEmail()">Gönder</button>
-    </div>
-</footer>
-
-<script>
-let currentSelectedEnergy = '';
-
-// MODÜL YÖNETİMİ
-function openModule(moduleId) {
-    document.querySelectorAll('.module-container').forEach(m => m.classList.remove('active'));
-    document.getElementById(moduleId).classList.add('active');
-    if(moduleId === 'modJournal') { renderJournalArchive(); }
-    if(moduleId === 'modTime') { renderHabits(); }
-    if(moduleId === 'modGoals') { renderAgendaTable(); renderRoutines(); renderGoals(); renderFinance(); }
-    if(moduleId === 'modSnack') { nextSnackCard(); nextSnackBook(); }
-}
-
-// RUH HALİ VE PSİKOLOJİ VERİTABANLARI
-const BASE_MOOD_DATABASE = {
-    happy: { quote: "“Mutluluk paylaşıldıkça çoğalan tek şeydir. Pozitif enerjiyi çevrene yansıt!”", mind: "<b>Zihinsel Egzersiz:</b> Seni minnettar kılan 3 şeyi düşün.", nutrition: "<b>Beslenme:</b> Taze meyve ve yeşil çay.", action: "<b>Aksiyon:</b> Bir dostuna mesaj at." },
-    stressed: { quote: "“Fırtınayı durduramazsın ama kendi içindeki sakinliği bulabilirsin.”", mind: "<b>4-7-8 Nefesi:</b> 4 sn nefes al, 7 sn tut, 8 sn ver.", nutrition: "<b>Beslenme:</b> Bitter çikolata veya papatya çayı.", action: "<b>Aksiyon:</b> Ekrandan 20 dk uzaklaş." },
-    anxious: { quote: "“Endişe yarının sorunlarını çözmez, bugünün huzurunu çalar.”", mind: "<b>5-4-3-2-1 Tekniği:</b> 5 şey gör, 4 şeye dokun, 3 ses duy.", nutrition: "<b>Beslenme:</b> Melisa çayı tercih et.", action: "<b>Aksiyon:</b> Kontrol edebildiklerini yaz." },
-    focused: { quote: "“Büyük işler, küçük fırsatların sonucudur.”", mind: "<b>Pomodoro:</b> 25 dk odaklan, 5 dk mola ver.", nutrition: "<b>Beslenme:</b> Ceviz ve filtre kahve.", action: "<b>Aksiyon:</b> En zor görevi bitir." },
-    sad: { quote: "“Hüzün ruhun dinlenme ihtiyacıdır. Kendine şefkat göster.”", mind: "<b>Şefkat:</b> Her gün %100 performans şart değil.", nutrition: "<b>Beslenme:</b> Muz veya ılık süt.", action: "<b>Aksiyon:</b> Ilık bir duş al." }
-};
-
-const PSYCHOLOGY_DATABASE = {
-    stressed: { empathy: "Stres ve yüklenme hissiniz son derece insani.", advice: "<b>💡 Mini Psikolog Önerisi:</b> Kontrol hiyerarşisi oluşturun. Kontrol edemediğiniz şeylerle savaşmayı bıraktığınız an zihniniz hafifler.", scholars: [{ name: "Carl Gustav Jung", quote: "“Direnç gösterdiğin şey varlığını sürdürür.”" }, { name: "Mevlânâ", quote: "“Zorluklar içindeki gücü göstermek için gelir.”" }] },
-    anxious: { empathy: "Anksiyete zihnin koruyucu alarmıdır. Güvendesiniz.", advice: "<b>💡 Mini Psikolog Önerisi:</b> 'Bu düşündüğüm felaket şu an gerçekleşiyor mu?' diye sorun. Yanıt hayırsa nefese odaklanın.", scholars: [{ name: "Sigmund Freud", quote: "“İfade edilmemiş duygular asla ölmez.”" }, { name: "İbn-i Sina", quote: "“Kaygı hastalığın yarısıdır, sükûnet sağlığın yarısıdır.”" }] },
-    sad: { empathy: "Üzüntünüzü hissedebiliyorum. Duygular yaşandıkça özgürleşir.", advice: "<b>💡 Mini Psikolog Önerisi:</b> Bir dostunuza gösterdiğiniz şefkati kendinize gösterin.", scholars: [{ name: "Yunus Emre", quote: "“Kahrın da hoş, lütfun da hoş...”" }] },
-    focused: { empathy: "Harika bir zihinsel akış halindesiniz!", advice: "<b>💡 Mini Psikolog Önerisi:</b> 50 dakikalık odaklanmanın ardından zihni boşaltacak yürüyüşler yapın.", scholars: [{ name: "Aristoteles", quote: "“Mükemmellik bir eylem değil, bir alışkanlıktır.”" }] },
-    happy: { empathy: "İçinizdeki ışık ve neşe harika!", advice: "<b>💡 Mini Psikolog Önerisi:</b> Çapa tekniği uygulayın; bu anın tadını nefesinizle zihninize mühürleyin.", scholars: [{ name: "Spinoza", quote: "“Sevinç, daha büyük bir mükemmelliğe geçiştir.”" }] }
-};
-
-function selectEnergy(type, btnElem) {
-    document.querySelectorAll('.mood-btn').forEach(b => b.classList.remove('active'));
-    btnElem.classList.add('active');
-    currentSelectedEnergy = type;
-
-    let baseArea = document.getElementById('baseAdviceArea');
-    let shareArea = document.getElementById('sharePromptArea');
-    let psychArea = document.getElementById('psychologyResultArea');
-    let baseData = BASE_MOOD_DATABASE[type];
-
-    baseArea.style.display = 'block';
-    baseArea.innerHTML = `
-        <div class="mood-result-card">
-            <div class="mood-quote">${baseData.quote}</div>
-            <div class="mood-section-title">🧠 Zihinsel Denge & Nefes</div><div style="font-size:12px; margin-bottom:8px;">${baseData.mind}</div>
-            <div class="mood-section-title">🍵 Beslenme Önerisi</div><div style="font-size:12px; margin-bottom:8px;">${baseData.nutrition}</div>
-            <div class="mood-section-title">🎯 Günün Aksiyonu</div><div style="font-size:12px;">${baseData.action}</div>
-        </div>
-    `;
-    shareArea.style.display = 'block';
-    psychArea.style.display = 'none';
-}
-
-function generatePsychologicalSupport() {
-    let type = currentSelectedEnergy;
-    let userNote = document.getElementById('userEnergyNote').value.trim();
-    let psychArea = document.getElementById('psychologyResultArea');
-    psychArea.style.display = 'block';
-
-    let data = PSYCHOLOGY_DATABASE[type] || PSYCHOLOGY_DATABASE['happy'];
-    let noteBlock = userNote ? `<div style="background:rgba(139,92,246,0.1); border-left:3px solid var(--purple); padding:8px 10px; border-radius:4px; margin-bottom:10px; font-size:11px;"><b>📝 Anlattığınız:</b> "${userNote}"</div>` : '';
-
-    let scholarsHTML = data.scholars.map(s => `
-        <div class="scholar-card">
-            <div class="scholar-name">🏛️ ${s.name}</div>
-            <div class="scholar-quote">${s.quote}</div>
-        </div>
-    `).join('');
-
-    psychArea.innerHTML = `
-        <div class="psychology-card">
-            <div class="psychology-title">🤝 Mini Psikolog Yaklaşımı</div>
-            ${noteBlock}
-            <p style="font-size:12px; line-height:1.5; margin:0 0 10px 0;">${data.empathy}</p>
-            <div style="font-size:12px; line-height:1.5; background:var(--card-bg); padding:10px; border-radius:6px; border:1px solid var(--border-color); margin-bottom:12px;">${data.advice}</div>
-            <div class="psychology-title" style="color:#60a5fa; margin-top:12px;">📚 Kadim Rehberler</div>
-            ${scholarsHTML}
-        </div>
-    `;
-    psychArea.scrollIntoView({ behavior: 'smooth' });
-}
-
-/* GÜNLÜK MİMARİSİ SİSTEMİ */
-function saveJournalEntry() {
-    let gratitude = document.getElementById('jGratitude').value.trim();
-    let victory = document.getElementById('jVictory').value.trim();
-    let lesson = document.getElementById('jLesson').value.trim();
-    let highlight = document.getElementById('jHighlight').value.trim();
-
-    if(!gratitude && !victory && !lesson && !highlight) { alert("En az bir alanı doldurunuz!"); return; }
-
-    let activeSession = localStorage.getItem('FitFormActiveSession') || 'Genel';
-    let todayDate = new Date().toLocaleDateString('tr-TR', { year:'numeric', month:'long', day:'numeric', weekday:'short' });
-    let key = `Journal_${activeSession}_${Date.now()}`;
-    let journalObj = { date: todayDate, energy: currentSelectedEnergy || 'Genel', gratitude, victory, lesson, highlight };
-
-    localStorage.setItem(key, JSON.stringify(journalObj));
-    document.getElementById('jGratitude').value = ''; document.getElementById('jVictory').value = '';
-    document.getElementById('jLesson').value = ''; document.getElementById('jHighlight').value = '';
-
-    alert("✨ Bugünkü günlüğünüz kaydedildi!");
-    renderJournalArchive();
-}
-
-function renderJournalArchive() {
-    let listArea = document.getElementById('journalArchiveList');
-    let activeSession = localStorage.getItem('FitFormActiveSession') || 'Genel';
-    let entries = [];
-
-    for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
-        if (key.startsWith(`Journal_${activeSession}_`)) {
-            try {
-                let item = JSON.parse(localStorage.getItem(key));
-                item.storageKey = key;
-                entries.push(item);
-            } catch(e){}
+    <script>
+        // Tab Geçişleri
+        function switchSection(secId, evt) {
+            document.querySelectorAll('.content-card').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            document.getElementById(secId).classList.add('active');
+            evt.currentTarget.classList.add('active');
         }
-    }
-    entries.sort((a,b) => b.storageKey.split('_')[2] - a.storageKey.split('_')[2]);
-    if(entries.length === 0) { listArea.innerHTML = '<p style="font-size:11px; color:var(--text-muted);">Henüz kaydedilmiş günlük bulunmuyor.</p>'; return; }
 
-    listArea.innerHTML = entries.map(e => `
-        <div class="journal-entry-card">
-            <div class="journal-date"><span>📅 ${e.date}</span><button onclick="deleteJournalEntry('${e.storageKey}')" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer; width:auto; padding:0;">🗑️ Sil</button></div>
-            ${e.gratitude ? `<div style="font-size:11px; margin-bottom:4px;"><b>🌱 Teşekkür & Huzur:</b> ${e.gratitude}</div>` : ''}
-            ${e.victory ? `<div style="font-size:11px; margin-bottom:4px;"><b>🏆 Zaferler:</b> ${e.victory}</div>` : ''}
-            ${e.lesson ? `<div style="font-size:11px; margin-bottom:4px;"><b>💡 Muhasebe:</b> ${e.lesson}</div>` : ''}
-            ${e.highlight ? `<div style="font-size:11px; color:var(--text-muted); font-style:italic;">"${e.highlight}"</div>` : ''}
-        </div>
-    `).join('');
-}
+        // Geniş Egzersiz Kütüphanesi Veritabanı
+        const exerciseData = [
+            // Göğüs
+            { name: "Bench Press (Barbell/Dumbbell)", cat: "gogus", desc: "Tüm göğüs kasını (Pectoralis Major) hedefleyen ana bileşik hareket.", tag: "Göğüs / Temel" },
+            { name: "Incline Dumbbell Press", cat: "gogus", desc: "Üst göğüs bölgesini öne çıkaran açısal itiş hareketi.", tag: "Üst Göğüs" },
+            { name: "Cable Fly / Push-Up", cat: "gogus", desc: "Göğüs kasındaki izole sıkışmayı sağlayan esnetme hareketi.", tag: "Göğüs Izole" },
+            
+            // Sırt
+            { name: "Barbell / Dumbbell Row", cat: "sirt", desc: "Sırt kalınlığını ve kanat hacmini geliştiren çekiş hareketi.", tag: "Sırt Kalınlık" },
+            { name: "Lat Pulldown / Barfiks", cat: "sirt", desc: "Sırt genişliği (V-Form) için en etkili üstten çekiş egzersizi.", tag: "Sırt Genişlik" },
+            { name: "Deadlift / Face Pull", cat: "sirt", desc: "Tüm arka zincir ve posteriyor omurga sağlığını güçlendiren temel hareket.", tag: "Arka Zincir" },
 
-function deleteJournalEntry(key) { if(confirm("Günlük silinsin mi?")) { localStorage.removeItem(key); renderJournalArchive(); } }
+            // Bacak
+            { name: "Barbell Squat / Goblet Squat", cat: "bacak", desc: "Bacak ve kalça kaslarının (Quadriceps/Glute) şahı olan bileşik egzersiz.", tag: "Bacak Temel" },
+            { name: "Romanian Deadlift (RDL)", cat: "bacak", desc: "Arka bacak (Hamstring) ve kalça estetiği için en iyi esnetme hareketi.", tag: "Arka Bacak" },
+            { name: "Leg Press / Lunges (Adımlama)", cat: "bacak", desc: "Bacak hacmi ve tek taraflı kuvvet dengesini sağlayan hareket.", tag: "Bacak İzolasyon" },
 
-/* ODAK & ZAMAN MİMARİSİ */
-let pomoInterval = null;
-function startPomodoro(minutes) {
-    clearInterval(pomoInterval);
-    let remSeconds = minutes * 60;
-    pomoInterval = setInterval(() => {
-        let m = Math.floor(remSeconds / 60), s = remSeconds % 60;
-        document.getElementById('pomoDisplay').innerText = `${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
-        if(remSeconds <= 0) { clearInterval(pomoInterval); alert("⏰ Süre Doldu!"); }
-        remSeconds--;
-    }, 1000);
-}
-function stopPomodoro() { clearInterval(pomoInterval); document.getElementById('pomoDisplay').innerText = "25:00"; }
+            // Omuz
+            { name: "Overhead Dumbbell Press", cat: "omuz", desc: "Omuz başlarını (Deltoid) bütünsel olarak büyüten dikey itiş.", tag: "Omuz Temel" },
+            { name: "Lateral Raise (Yana Açış)", cat: "omuz", desc: "Omuz genişliği ve 3D omuz görünümü sağlayan izole hareket.", tag: "Yan Omuz" },
+            { name: "Rear Delt Fly", cat: "omuz", desc: "Postür düzeltici ve arka omuz odaklı izole egzersiz.", tag: "Arka Omuz" },
 
-function addHabit() {
-    let title = document.getElementById('newHabitInput').value.trim();
-    if(!title) return;
-    let activeSession = localStorage.getItem('FitFormActiveSession') || 'Genel';
-    let key = `Habit_${activeSession}_${Date.now()}`;
-    localStorage.setItem(key, JSON.stringify({ title, streak: 0, completedToday: false }));
-    document.getElementById('newHabitInput').value = '';
-    renderHabits();
-}
+            // Kol
+            { name: "Barbell / Dumbbell Biceps Curl", cat: "kol", desc: "Ön kol kaslarını (Biceps) çalıştıran temel bükme hareketi.", tag: "Biceps" },
+            { name: "Triceps Pushdown / Dips", cat: "kol", desc: "Arka kol (Triceps) kütlesini ve itiş gücünü artıran egzersiz.", tag: "Triceps" },
 
-function renderHabits() {
-    let area = document.getElementById('habitListArea');
-    let activeSession = localStorage.getItem('FitFormActiveSession') || 'Genel';
-    let habits = [];
-    for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
-        if (key.startsWith(`Habit_${activeSession}_`)) {
-            try {
-                let item = JSON.parse(localStorage.getItem(key));
-                item.storageKey = key;
-                habits.push(item);
-            } catch(e){}
+            // Karın & Core
+            { name: "Plank / Side Plank", cat: "karin", desc: "Core bölgesini ve derin karın kaslarını izometrik güçlendiren statik duruş.", tag: "Core Denge" },
+            { name: "Hanging Leg Raise", cat: "karin", desc: "Alt karın kaslarını en yüksek aktivasyonla çalışan hareket.", tag: "Alt Karın" }
+        ];
+
+        function renderExercises(filter = 'all') {
+            const container = document.getElementById('exercise-container');
+            container.innerHTML = '';
+
+            const filtered = filter === 'all' ? exerciseData : exerciseData.filter(e => e.cat === filter);
+
+            filtered.forEach(ex => {
+                const item = document.createElement('div');
+                item.className = 'exercise-item';
+                item.innerHTML = `
+                    <div class="ex-info">
+                        <h5>${ex.name}</h5>
+                        <p>${ex.desc}</p>
+                    </div>
+                    <div class="ex-tag">${ex.tag}</div>
+                `;
+                container.appendChild(item);
+            });
         }
-    }
-    if(habits.length === 0) { area.innerHTML = '<p style="font-size:11px; color:var(--text-muted);">Henüz bir alışkanlık eklemediniz.</p>'; return; }
-    area.innerHTML = habits.map(h => `
-        <div class="habit-item">
-            <div><input type="checkbox" ${h.completedToday ? 'checked' : ''} onchange="toggleHabit('${h.storageKey}')" style="width:auto; display:inline;"><span style="font-size:12px; font-weight:600; ${h.completedToday ? 'text-decoration:line-through; opacity:0.6;' : ''}">${h.title}</span></div>
-            <div style="display:flex; align-items:center; gap:6px;"><span class="habit-streak">🔥 ${h.streak} Gün</span><button onclick="deleteHabit('${h.storageKey}')" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer; width:auto; padding:0;">🗑️</button></div>
-        </div>
-    `).join('');
-}
-function toggleHabit(key) { let h = JSON.parse(localStorage.getItem(key)); h.completedToday = !h.completedToday; h.streak = h.completedToday ? h.streak + 1 : Math.max(0, h.streak - 1); localStorage.setItem(key, JSON.stringify(h)); renderHabits(); }
-function deleteHabit(key) { localStorage.removeItem(key); renderHabits(); }
 
-/* HEDEF, RİTÜEL & FİNANS MİMARİSİ */
-function switchGoalTab(tabId) {
-    document.querySelectorAll('.goal-tab-content').forEach(c => c.style.display = 'none');
-    document.getElementById(tabId).style.display = 'block';
-}
-
-const HOURS = ["06:00","07:00","08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00"];
-function addAgendaTask() {
-    let hour = document.getElementById('agendaHourSelect').value;
-    let taskText = document.getElementById('agendaTaskInput').value.trim();
-    if(!taskText) return;
-    let activeSession = localStorage.getItem('FitFormActiveSession') || 'Genel';
-    let todayStr = new Date().toISOString().split('T')[0];
-    let key = `Agenda_${activeSession}_${todayStr}_${Date.now()}`;
-    localStorage.setItem(key, JSON.stringify({ hour, taskText, completed: false }));
-    document.getElementById('agendaTaskInput').value = '';
-    renderAgendaTable();
-}
-
-function renderAgendaTable() {
-    let tbody = document.getElementById('agendaTableBody');
-    let activeSession = localStorage.getItem('FitFormActiveSession') || 'Genel';
-    let todayStr = new Date().toISOString().split('T')[0];
-    document.getElementById('agendaDateTitle').innerText = new Date().toLocaleDateString('tr-TR', { day:'numeric', month:'long', year:'numeric' });
-    let tasks = [];
-    for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
-        if (key.startsWith(`Agenda_${activeSession}_${todayStr}_`)) {
-            try {
-                let item = JSON.parse(localStorage.getItem(key));
-                item.storageKey = key;
-                tasks.push(item);
-            } catch(e){}
+        function filterEx(cat, evt) {
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            evt.currentTarget.classList.add('active');
+            renderExercises(cat);
         }
-    }
-    tbody.innerHTML = HOURS.map(hour => {
-        let hourTasks = tasks.filter(t => t.hour === hour);
-        let tasksHTML = hourTasks.map(t => `
-            <div class="agenda-task-item ${t.completed ? 'completed' : ''}">
-                <span>${t.taskText}</span>
-                <div style="display:flex; gap:4px;"><button onclick="toggleAgendaTask('${t.storageKey}')" style="background:none; border:none; font-size:10px; cursor:pointer; width:auto; padding:0;">${t.completed ? '↩️' : '✅'}</button><button onclick="deleteAgendaTask('${t.storageKey}')" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer; width:auto; padding:0;">🗑️</button></div>
-            </div>
-        `).join('');
-        return `<tr><td class="agenda-time-cell">${hour}</td><td>${tasksHTML || '<span style="color:var(--text-muted); font-size:10px; opacity:0.5;">- Serbest Zaman -</span>'}</td></tr>`;
-    }).join('');
-}
-function toggleAgendaTask(key) { let t = JSON.parse(localStorage.getItem(key)); t.completed = !t.completed; localStorage.setItem(key, JSON.stringify(t)); renderAgendaTable(); }
-function deleteAgendaTask(key) { localStorage.removeItem(key); renderAgendaTable(); }
 
-/* RİTÜELLER (MAX 5 ÖZEL RİTÜEL SINIRLI) */
-function addCustomRoutine(type) {
-    let inputElem = document.getElementById(type === 'morning' ? 'newMorningRoutineInput' : 'newEveningRoutineInput');
-    let title = inputElem.value.trim();
-    if(!title) return;
-
-    let activeSession = localStorage.getItem('FitFormActiveSession') || 'Genel';
-    let count = 0;
-    for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
-        if (key.startsWith(`CustomRoutine_${activeSession}_${type}_`)) { count++; }
-    }
-
-    if(count >= 5) { alert("⚠️ En fazla 5 özel ritüel ekleyebilirsiniz!"); return; }
-
-    let key = `CustomRoutine_${activeSession}_${type}_${Date.now()}`;
-    localStorage.setItem(key, JSON.stringify({ title, completed: false }));
-    inputElem.value = '';
-    renderRoutines();
-}
-
-function renderRoutines() {
-    let activeSession = localStorage.getItem('FitFormActiveSession') || 'Genel';
-    ['morning', 'evening'].forEach(type => {
-        let container = document.getElementById(type === 'morning' ? 'morningRoutinesList' : 'eveningRoutinesList');
-        let routines = [];
-        for (let i = 0; i < localStorage.length; i++) {
-            let key = localStorage.key(i);
-            if (key.startsWith(`CustomRoutine_${activeSession}_${type}_`)) {
-                try {
-                    let item = JSON.parse(localStorage.getItem(key));
-                    item.storageKey = key;
-                    routines.push(item);
-                } catch(e){}
-            }
-        }
-        let defaultHTML = (type === 'morning') ? `
-            <label><input type="checkbox"> 1 Büyük bardak su iç</label>
-            <label><input type="checkbox"> 5 Dakika esneme / Doğal ışık al</label>
-        ` : `
-            <label><input type="checkbox"> Dijital ekranları kapat (Mavi ışık molası)</label>
-            <label><input type="checkbox"> Yarının ilk öncelikli görevini yaz</label>
-        `;
-
-        let customHTML = routines.map(r => `
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <label style="margin:2px 0;"><input type="checkbox" ${r.completed ? 'checked' : ''} onchange="toggleRoutine('${r.storageKey}')"> ${r.title}</label>
-                <button onclick="deleteRoutine('${r.storageKey}')" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer; width:auto; padding:0;">🗑️</button>
-            </div>
-        `).join('');
-
-        container.innerHTML = defaultHTML + customHTML;
-    });
-}
-function toggleRoutine(key) { let r = JSON.parse(localStorage.getItem(key)); r.completed = !r.completed; localStorage.setItem(key, JSON.stringify(r)); renderRoutines(); }
-function deleteRoutine(key) { localStorage.removeItem(key); renderRoutines(); }
-
-/* HEDEFLER & ORAN HESAPLAMA */
-function addGoal() {
-    let title = document.getElementById('newGoalInput').value.trim();
-    let progress = parseInt(document.getElementById('newGoalProgressInput').value) || 0;
-    if(!title) return;
-
-    progress = Math.min(100, Math.max(0, progress));
-    let activeSession = localStorage.getItem('FitFormActiveSession') || 'Genel';
-    let key = `Goal_${activeSession}_${Date.now()}`;
-    localStorage.setItem(key, JSON.stringify({ title, progress: progress }));
-    document.getElementById('newGoalInput').value = ''; document.getElementById('newGoalProgressInput').value = '';
-    renderGoals();
-}
-
-function renderGoals() {
-    let area = document.getElementById('goalListArea');
-    let activeSession = localStorage.getItem('FitFormActiveSession') || 'Genel';
-    let goals = [];
-    let totalProgress = 0;
-
-    for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
-        if (key.startsWith(`Goal_${activeSession}_`)) {
-            try {
-                let item = JSON.parse(localStorage.getItem(key));
-                item.storageKey = key;
-                goals.push(item);
-                totalProgress += item.progress;
-            } catch(e){}
-        }
-    }
-
-    let avgProgress = goals.length > 0 ? Math.round(totalProgress / goals.length) : 0;
-    document.getElementById('overallGoalProgressText').innerText = `%${avgProgress}`;
-    document.getElementById('overallGoalProgressBar').style.width = `${avgProgress}%`;
-
-    if(goals.length === 0) { area.innerHTML = '<p style="font-size:11px; color:var(--text-muted);">Henüz bir hedef eklemediniz.</p>'; return; }
-
-    area.innerHTML = goals.map(g => `
-        <div class="habit-item" style="flex-direction:column; align-items:stretch;">
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <span style="font-size:12px; font-weight:700;">${g.title}</span>
-                <div style="display:flex; gap:6px; align-items:center;">
-                    <span style="font-size:11px; font-weight:800; color:var(--purple);">%${g.progress}</span>
-                    <button onclick="deleteGoal('${g.storageKey}')" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer; width:auto; padding:0;">🗑️</button>
-                </div>
-            </div>
-            <div style="display:flex; gap:6px; margin-top:6px; align-items:center;">
-                <input type="range" min="0" max="100" value="${g.progress}" onchange="updateGoalProgress('${g.storageKey}', this.value)" style="margin:0;">
-            </div>
-        </div>
-    `).join('');
-}
-
-function updateGoalProgress(key, val) {
-    let g = JSON.parse(localStorage.getItem(key));
-    g.progress = parseInt(val);
-    localStorage.setItem(key, JSON.stringify(g));
-    renderGoals();
-}
-function deleteGoal(key) { localStorage.removeItem(key); renderGoals(); }
-
-/* EKONOMİK PERFORMANS (FİNANS) */
-function addFinanceItem() {
-    let title = document.getElementById('finTitleInput').value.trim();
-    let amount = parseFloat(document.getElementById('finAmountInput').value) || 0;
-    let day = parseInt(document.getElementById('finDayInput').value) || 1;
-    if(!title || amount <= 0) return;
-
-    let activeSession = localStorage.getItem('FitFormActiveSession') || 'Genel';
-    let key = `Finance_${activeSession}_${Date.now()}`;
-    localStorage.setItem(key, JSON.stringify({ title, amount, day, paid: false }));
-    document.getElementById('finTitleInput').value = ''; document.getElementById('finAmountInput').value = ''; document.getElementById('finDayInput').value = '';
-    renderFinance();
-}
-
-function renderFinance() {
-    let area = document.getElementById('financeListArea');
-    let activeSession = localStorage.getItem('FitFormActiveSession') || 'Genel';
-    let items = [];
-    let total = 0, paid = 0;
-
-    for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
-        if (key.startsWith(`Finance_${activeSession}_`)) {
-            try {
-                let item = JSON.parse(localStorage.getItem(key));
-                item.storageKey = key;
-                items.push(item);
-                total += item.amount;
-                if(item.paid) paid += item.amount;
-            } catch(e){}
-        }
-    }
-
-    document.getElementById('finTotalAmount').innerText = `${total.toLocaleString('tr-TR')} TL`;
-    document.getElementById('finPaidAmount').innerText = `${paid.toLocaleString('tr-TR')} TL`;
-    document.getElementById('finRemainingAmount').innerText = `${(total - paid).toLocaleString('tr-TR')} TL`;
-
-    if(items.length === 0) { area.innerHTML = '<p style="font-size:11px; color:var(--text-muted);">Henüz rutin bir ödeme eklemediniz.</p>'; return; }
-
-    area.innerHTML = items.map(f => `
-        <div class="habit-item">
-            <div>
-                <input type="checkbox" ${f.paid ? 'checked' : ''} onchange="toggleFinancePaid('${f.storageKey}')" style="width:auto; display:inline;">
-                <span style="font-size:12px; font-weight:700; ${f.paid ? 'text-decoration:line-through; opacity:0.6;' : ''}">${f.title}</span>
-                <span style="font-size:10px; color:var(--text-muted); margin-left:6px;">(Her ayın ${f.day}'i)</span>
-            </div>
-            <div style="display:flex; gap:8px; align-items:center;">
-                <span style="font-size:12px; font-weight:800; color:${f.paid ? 'var(--primary)' : 'var(--rose)'};">${f.amount.toLocaleString('tr-TR')} TL</span>
-                <button onclick="deleteFinanceItem('${f.storageKey}')" style="background:none; border:none; color:#ef4444; font-size:10px; cursor:pointer; width:auto; padding:0;">🗑️</button>
-            </div>
-        </div>
-    `).join('');
-}
-
-function toggleFinancePaid(key) { let f = JSON.parse(localStorage.getItem(key)); f.paid = !f.paid; localStorage.setItem(key, JSON.stringify(f)); renderFinance(); }
-function deleteFinanceItem(key) { localStorage.removeItem(key); renderFinance(); }
-
-/* MODÜL 6: AKIL ÇEREZİ SİSTEMİ */
-function switchSnackTab(tabId) {
-    document.querySelectorAll('.snack-tab-content').forEach(c => c.style.display = 'none');
-    document.getElementById(tabId).style.display = 'block';
-}
-
-const SNACK_CARDS = [
-    { tag: "Stoacılık & Zihin", title: "İki Katlı Kontrol İlkesi", body: "Epiktetos der ki: 'Olayları ikiye ayır: Kontrol edebildiklerin (düşüncelerin, tepkilerin) ve edemediklerin (hava durumu, başkalarının davranışları).' Yalnızca kontrol ettiklerine odaklandığında kaygı yok olur." },
-    { tag: "Pratik Yaşam Hilesi", title: "5 Saniye Kuralı (Mel Robbins)", body: "Ertelediğin bir işi yapmaya karar verdiğinde içinden 5-4-3-2-1 diye geriye say ve hemen harekete geç. Beynin 5 saniye sonra mazeret üretmeye başlar; onu hızımla şaşırt!" },
-    { tag: "Psikolojik İllüzyon", title: "Spot Işığı Etkisi (Spotlight Effect)", body: "Hata yaptığında herkesin sana baktığını sanırsın. Oysa insanlar zamanlarının %95'inde yalnızca kendi hayatlarını ve dertlerini düşünürler. Rahat ol!" },
-    { tag: "Verimlilik Tüyosu", title: "2 Dakika Kuralı (David Allen)", body: "Bir iş 2 dakikadan az sürecekse (örn: e-postaya kısa yanıt vermek, bardağı makineye atmak) erteleme, hemen yap. Zihninde tutmanın maliyeti yapmaktan büyüktür." }
-];
-
-const SNACK_BOOKS = [
-    { title: "Atomik Alışkanlıklar (James Clear)", body: "<b>1. %1 Gelişim:</b> Her gün %1 iyileşmek yıl sonunda seni 37 kat ileri taşır.<br><b>2. Sistemler > Hedefler:</b> Hedef yönü gösterir, sistemler seni oraya taşır.<br><b>3. Kimlik Değişimi:</b> 'Kilo vermek istiyorum' deme, 'Ben sağlığına değer veren biriyim' de." },
-    { title: "Derin Çalışma / Deep Work (Cal Newport)", body: "<b>1. Odak Bir Kas Gibidir:</b> Bildirimler açıkken çalışmak zihinsel parçalanma yaratır.<br><b>2. Sıkılmaya İzin Ver:</b> Sırada beklerken hemen telefonu açma; zihnin boş kalması yaratıcılığı tetikler.<br><b>3. Sığ İşleri Ele:</b> E-posta ve mesaj takibini günün belirli saatlerine sıkıştır." },
-    { title: "İnsanın Anlam Arayışı (Viktor Frankl)", body: "<b>1. Son Özgürlük:</b> İnsanın elinden her şeyi alabilirsiniz ama tutumunu seçme özgürlüğünü alamazsınız.<br><b>2. Neden'i Olan Her Nasıl'a Katlanır:</b> Yaşamak için bir nedeni olan insan, her türlü zorluğu aşabilir.<br><b>3. Anlam Acıda Bile Vardır:</b> Kaçamadığın acıyı bir zarafetle üstlenmek insanı olgunlaştırır." }
-];
-
-let snackCardIdx = 0; let snackBookIdx = 0;
-function nextSnackCard() {
-    snackCardIdx = (snackCardIdx + 1) % SNACK_CARDS.length;
-    let card = SNACK_CARDS[snackCardIdx];
-    document.getElementById('snackCardTag').innerText = card.tag;
-    document.getElementById('snackCardTitle').innerText = card.title;
-    document.getElementById('snackCardBody').innerText = card.body;
-}
-
-function nextSnackBook() {
-    snackBookIdx = (snackBookIdx + 1) % SNACK_BOOKS.length;
-    let book = SNACK_BOOKS[snackBookIdx];
-    document.getElementById('snackBookTitle').innerText = book.title;
-    document.getElementById('snackBookBody').innerHTML = book.body;
-}
-
-// GENEL AYARLAR & FOOTER
-function toggleFeedbackModal() { let f = document.getElementById('feedbackModal'); f.style.display = (f.style.display === 'block') ? 'none' : 'block'; }
-function sendFeedbackEmail() {
-    let msg = document.getElementById('feedbackText').value.trim();
-    if(!msg) { alert("Lütfen görüşünüzü yazınız!"); return; }
-    window.location.href = `mailto:kemalerdal1980@gmail.com?subject=YAŞAM MİMARİSİ Görüşü&body=${encodeURIComponent(msg)}`;
-    document.getElementById('feedbackText').value = ''; toggleFeedbackModal();
-}
-
-function switchAuthMode(mode) {
-    document.getElementById('formLogin').style.display = (mode === 'login') ? 'block' : 'none';
-    document.getElementById('formRegister').style.display = (mode === 'register') ? 'block' : 'none';
-    document.getElementById('formForgot').style.display = (mode === 'forgot') ? 'block' : 'none';
-    document.getElementById('btnTabLogin').className = 'auth-tab-btn ' + (mode === 'login' ? 'active' : '');
-    document.getElementById('btnTabRegister').className = 'auth-tab-btn ' + (mode === 'register' ? 'active' : '');
-    document.getElementById('btnTabForgot').className = 'auth-tab-btn ' + (mode === 'forgot' ? 'active' : '');
-}
-
-function handleRegister() {
-    let code = document.getElementById('regUserCode').value.trim().toUpperCase();
-    let pass = document.getElementById('regPassword').value.trim();
-    let q = document.getElementById('regSecQuestion').value;
-    let a = document.getElementById('regSecAnswer').value.trim().toLowerCase();
-    if(!code || !pass || !a) { alert("Tüm alanları doldurunuz!"); return; }
-    localStorage.setItem(`FitFormAuth_${code}`, JSON.stringify({ code, pass, q, a }));
-    localStorage.setItem('FitFormActiveSession', code);
-    alert("Kaydınız oluşturuldu!"); document.getElementById('authModal').style.display = 'none';
-}
-
-function handleLogin() {
-    let code = document.getElementById('loginUserCode').value.trim().toUpperCase();
-    let pass = document.getElementById('loginPassword').value.trim();
-    if(!code || !pass) { alert("Kod ve Şifre girilmelidir!"); return; }
-    let stored = localStorage.getItem(`FitFormAuth_${code}`);
-    if(!stored) { alert("Kullanıcı bulunamadı!"); return; }
-    let userData = JSON.parse(stored);
-    if(userData.pass === pass) { localStorage.setItem('FitFormActiveSession', code); document.getElementById('authModal').style.display = 'none'; }
-    else { alert("Hatalı Şifre!"); }
-}
-
-function handleForgotPassword() {
-    let code = document.getElementById('forgotUserCode').value.trim().toUpperCase();
-    let q = document.getElementById('forgotSecQuestion').value;
-    let a = document.getElementById('forgotSecAnswer').value.trim().toLowerCase();
-    let newPass = document.getElementById('newResetPassword').value.trim();
-    if(!code || !a || !newPass) { alert("Tüm alanları doldurunuz!"); return; }
-    let stored = localStorage.getItem(`FitFormAuth_${code}`);
-    if(!stored) { alert("Kullanıcı bulunamadı!"); return; }
-    let userData = JSON.parse(stored);
-    if(userData.q === q && userData.a === a) {
-        userData.pass = newPass; localStorage.setItem(`FitFormAuth_${code}`, JSON.stringify(userData));
-        localStorage.setItem('FitFormActiveSession', code); alert("✅ Şifreniz güncellendi!"); document.getElementById('authModal').style.display = 'none';
-    } else { alert("Güvenlik yanıtı hatalı!"); }
-}
-
-function checkAuthSession() { document.getElementById('authModal').style.display = localStorage.getItem('FitFormActiveSession') ? 'none' : 'flex'; }
-function logoutApp() { if(confirm("Oturum kapatılsın mı?")) { localStorage.removeItem('FitFormActiveSession'); checkAuthSession(); } }
-function toggleTheme() { document.body.classList.toggle('dark-theme'); document.getElementById('themeBtn').innerHTML = document.body.classList.contains('dark-theme') ? "☀️ Aydınlık Mod" : "🌙 Karanlık Mod"; }
-
-function updateLiveDateTime() {
-    const now = new Date();
-    document.getElementById('liveDateTime').innerHTML = `📅 ${now.toLocaleDateString('tr-TR', { year:'numeric', month:'long', day:'numeric', weekday:'short', hour:'2-digit', minute:'2-digit', second:'2-digit' })}`;
-}
-setInterval(updateLiveDateTime, 1000);
-
-window.onload = function() {
-    checkAuthSession();
-    updateLiveDateTime();
-    populateSavedProfilesDropdown();
-};
-
-/* FIT FORM DETAYLI HESAPLAMA & RAPORLAMA SİSTEMİ */
-let globalTargets = { cal: 0, protein: 0, carbs: 0, fat: 0 };
-let waterGlass = 0; let totalCaffeine = 0; let timerInterval = null;
-
-function toggleAccordion(headerBtn) { headerBtn.nextElementSibling.style.display = headerBtn.classList.toggle('active') ? "block" : "none"; }
-function switchTab(tabId) {
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(tabId).classList.add('active');
-    let idx = tabId === 'tabReport' ? 0 : tabId === 'tabTracking' ? 1 : 2;
-    document.querySelectorAll('.tab-btn')[idx].classList.add('active');
-}
-
-function populateSavedProfilesDropdown() {
-    let select = document.getElementById('savedProfilesSelect');
-    select.innerHTML = '<option value="">-- Kayıtlı Profil Seçin --</option>';
-    for (let i = 0; i < localStorage.length; i++) {
-        let key = localStorage.key(i);
-        if (key.startsWith('FitFormProfile_')) {
-            try {
-                let profile = JSON.parse(localStorage.getItem(key));
-                let opt = document.createElement('option'); opt.value = key; opt.innerText = `👤 ${profile.fullName}`;
-                select.appendChild(opt);
-            } catch(e){}
-        }
-    }
-}
-
-function onProfileSelectChange() {
-    let key = document.getElementById('savedProfilesSelect').value; if(!key) return;
-    let p = JSON.parse(localStorage.getItem(key));
-    document.getElementById('fullName').value = p.fullName; document.getElementById('gender').value = p.gender;
-    document.getElementById('goal').value = p.goal; document.getElementById('weight').value = p.weight;
-    document.getElementById('height').value = p.height; document.getElementById('age').value = p.age;
-    document.getElementById('activity').value = p.activity; document.getElementById('health').value = p.health;
-    document.getElementById('trainerNote').value = p.trainerNote || '';
-}
-
-function saveClientProfile() {
-    let fullName = document.getElementById('fullName').value.trim(); if(!fullName) { alert("İsim giriniz!"); return; }
-    let profile = { fullName, gender: document.getElementById('gender').value, goal: document.getElementById('goal').value, weight: document.getElementById('weight').value, height: document.getElementById('height').value, age: document.getElementById('age').value, activity: document.getElementById('activity').value, health: document.getElementById('health').value, trainerNote: document.getElementById('trainerNote').value };
-    localStorage.setItem(`FitFormProfile_${fullName.toLowerCase()}`, JSON.stringify(profile));
-    populateSavedProfilesDropdown(); alert("Profil kaydedildi!");
-}
-
-function deleteSelectedProfile() { let key = document.getElementById('savedProfilesSelect').value; if(key && confirm("Silinsin mi?")) { localStorage.removeItem(key); populateSavedProfilesDropdown(); } }
-
-function calculate() {
-    let fullName = document.getElementById('fullName').value.trim();
-    let weight = parseFloat(document.getElementById('weight').value);
-    let height = parseFloat(document.getElementById('height').value);
-    let age = parseFloat(document.getElementById('age').value);
-    let gender = document.getElementById('gender').value;
-    let activity = parseFloat(document.getElementById('activity').value);
-    let goal = document.getElementById('goal').value;
-    let health = document.getElementById('health').value;
-    let trainerNote = document.getElementById('trainerNote').value.trim();
-
-    if(!fullName || !weight || !height || !age) { alert("Lütfen tüm alanları doldurun!"); return; }
-
-    let bmh = (gender === 'male') ? (10 * weight) + (6.25 * height) - (5 * age) + 5 : (10 * weight) + (6.25 * height) - (5 * age) - 161;
-    let tdee = bmh * activity;
-    let targetCal = (goal === 'fatloss') ? tdee * 0.8 : (goal === 'muscle') ? tdee * 1.15 : tdee;
-
-    globalTargets = { cal: Math.round(targetCal), protein: Math.round(weight * 2), carbs: Math.round((targetCal * 0.4)/4), fat: Math.round((targetCal * 0.25)/9) };
-
-    document.getElementById('sec1Content').innerHTML = `
-        <div class="stats-grid">
-            <div class="stat-box"><div class="title">BMH</div><div class="val">${Math.round(bmh)} kcal</div></div>
-            <div class="stat-box"><div class="title">TDEE</div><div class="val">${Math.round(tdee)} kcal</div></div>
-            <div class="stat-box"><div class="title">Su İhtiyacı</div><div class="val">${(weight * 0.035).toFixed(1)} L</div></div>
-        </div>
-        <div class="macro-card">
-            <div class="macro-row"><b>🎯 Hedef Günlük Yakıt:</b> <span><b>${globalTargets.cal} kcal</b></span></div>
-            <div class="macro-row"><span>🥩 Protein: <b>${globalTargets.protein}g</b> (%30)</span> <span>🥑 Yağ: <b>${globalTargets.fat}g</b> (%25)</span> <span>🍚 Karbonhidrat: <b>${globalTargets.carbs}g</b> (%45)</span></div>
-        </div>
-        ${trainerNote ? `<div style="background:rgba(59,130,246,0.1); border-left:3px solid var(--secondary); padding:8px 10px; border-radius:4px; margin-top:8px; font-size:11px;"><b>📝 Antrenör Notu:</b> ${trainerNote}</div>` : ''}
-    `;
-
-    renderMealSplit();
-    renderWorkoutPlan(goal, health);
-
-    document.getElementById('btnPdfDownload').style.display = 'block';
-    document.getElementById('btnWaShare').style.display = 'flex';
-}
-
-function renderMealSplit() {
-    if(!globalTargets.cal) return;
-    let numMeals = parseInt(document.getElementById('mealSplitSelect').value);
-    let area = document.getElementById('mealSplitArea');
-    let perMealCal = Math.round(globalTargets.cal / numMeals);
-    let perMealProt = Math.round(globalTargets.protein / numMeals);
-    let perMealCarb = Math.round(globalTargets.carbs / numMeals);
-    let perMealFat = Math.round(globalTargets.fat / numMeals);
-
-    let html = '';
-    for(let i=1; i<=numMeals; i++) {
-        html += `
-            <div class="meal-split-card">
-                <div class="meal-split-title">🍽️ ${i}. Öğün Hedefi (${perMealCal} kcal)</div>
-                <div style="font-size:11px; color:var(--text-muted);">🥩 Protein: <b>${perMealProt}g</b> | 🍚 Karb: <b>${perMealCarb}g</b> | 🥑 Yağ: <b>${perMealFat}g</b></div>
-                <div style="font-size:10px; color:var(--text-main); margin-top:4px; font-style:italic;">Değişim Önerisi: ${perMealProt*5}g Tavuk/Hindi Göğsü veya ${perMealProt*6}g Yumurta Beyazı + ${perMealCarb*2}g Pişmiş Pirinç/Yulaf.</div>
-            </div>
-        `;
-    }
-    area.innerHTML = html;
-}
-
-function renderWorkoutPlan(goal, health) {
-    let area = document.getElementById('sec3Content');
-    let warningHTML = '';
-
-    if(health === 'hernia') warningHTML = `<div class="ex-warning">⚠️ Bel/Boyun Fıtığı Uyarısı: Omurgaya dik yük binen Squat ve Overhead Press hareketlerinden kaçının. Zemin destekli egzersizler tercih edilmiştir.</div>`;
-    if(health === 'knee') warningHTML = `<div class="ex-warning">⚠️ Diz Hassasiyeti Uyarısı: Derin Squat ve Lunge hareketleri yerine Leg Extension (sınırlı açı) ve Hamstring Curls eklenmiştir.</div>`;
-    if(health === 'heart') warningHTML = `<div class="ex-warning">⚠️ Kalp/Tansiyon Uyarısı: Valsalva manevrasından (nefes tutarak ıkınma) kaçının. Tempolu yürüyüş ve hafif direnç tercih edilmiştir.</div>`;
-
-    let planHTML = '';
-    if(goal === 'fatloss') {
-        planHTML = `
-            ${warningHTML}
-            <h4 style="margin:4px 0; font-size:12px; color:var(--primary-dark);">🔥 Yağ Yakımı & Hipertrofi Programı (Haftalık 4 Gün)</h4>
-            <ul class="ex-list">
-                <li><b>Pazartesi (Göğüs & Ön Kol):</b> Dumbbell Bench Press (3x10), Incline DB Fly (3x12), Cable Curls (3x12).</li>
-                <li><b>Salı (Sırt & Arka Kol):</b> Lat Pulldown (4x10), Seated Cable Row (3x12), Triceps Pushdown (3x12).</li>
-                <li><b>Perşembe (Bacak & Omuz):</b> Leg Press (3x12), Lying Leg Curl (4x10), Lateral Raise (4x15).</li>
-                <li><b>Cuma (Tüm Vücut & Kardiyo):</b> 20 Dk LISS Kardiyo + Plank & Core Çalışması.</li>
-            </ul>
-        `;
-    } else if(goal === 'muscle') {
-        planHTML = `
-            ${warningHTML}
-            <h4 style="margin:4px 0; font-size:12px; color:var(--primary-dark);">💪 Kas Yapımı & Güç Programı (Push / Pull / Legs)</h4>
-            <ul class="ex-list">
-                <li><b>İtiş (Push):</b> Incline DB Press (4x8), DB Shoulder Press (3x10), Dips / Pushdown (3x10).</li>
-                <li><b>Çekiş (Pull):</b> Lat Pulldown (4x8), DB Row (3x10), Face Pull (4x15), Biceps Curls (3x10).</li>
-                <li><b>Bacak (Legs):</b> Leg Press (4x10), Romanian Deadlift (3x10), Calf Raises (4x15).</li>
-            </ul>
-        `;
-    } else {
-        planHTML = `
-            ${warningHTML}
-            <h4 style="margin:4px 0; font-size:12px; color:var(--primary-dark);">⚡ Form Koruma & Fonksiyonel Atletizm (Haftalık 3 Gün)</h4>
-            <ul class="ex-list">
-                <li><b>Full Body A:</b> Push-ups (3x15), DB Row (3x12), Goblet Squat (3x12), Plank 45 Sn.</li>
-                <li><b>Full Body B:</b> Dumbbell Press (3x12), Lat Pulldown (3x12), DB Lunge (3x10), Bird-Dog.</li>
-            </ul>
-        `;
-    }
-    area.innerHTML = planHTML;
-}
-
-function addWater() { waterGlass++; document.getElementById('waterGlassCount').innerText = waterGlass; }
-function addCoffee() { totalCaffeine += 80; document.getElementById('caffeineCount').innerText = totalCaffeine; }
-function resetTracker() { waterGlass = 0; totalCaffeine = 0; document.getElementById('waterGlassCount').innerText = '0'; document.getElementById('caffeineCount').innerText = '0'; }
-
-function startTimer(seconds) {
-    clearInterval(timerInterval); let rem = seconds;
-    timerInterval = setInterval(() => {
-        let m = Math.floor(rem/60), s = rem%60;
-        document.getElementById('timerCount').innerText = `${m<10?'0':''}${m}:${s<10?'0':''}${s}`;
-        if(rem<=0) { clearInterval(timerInterval); alert("Süre Doldu!"); } rem--;
-    }, 1000);
-}
-function stopTimer() { clearInterval(timerInterval); document.getElementById('timerCount').innerText = "00:00"; }
-
-function downloadPDF() {
-    let element = document.getElementById('pdfExportArea');
-    html2canvas(element, { scale: 2 }).then(canvas => {
-        let imgData = canvas.toDataURL('image/png');
-        let pdf = new jspdf.jsPDF('p', 'mm', 'a4');
-        let imgWidth = 190;
-        let imgHeight = (canvas.height * imgWidth) / canvas.width;
-        pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
-        pdf.save(`${document.getElementById('fullName').value || 'FitForm'}_Performans_Raporu.pdf`);
-    });
-}
-
-function shareWhatsApp() {
-    let name = document.getElementById('fullName').value;
-    let text = `Merhaba ${name}, FIT FORM Kişisel Performans Raporunuz Hazır!\n\n🎯 Hedef Kalori: ${globalTargets.cal} kcal\n🥩 Protein: ${globalTargets.protein}g\n🍚 Karbonhidrat: ${globalTargets.carbs}g\n🥑 Yağ: ${globalTargets.fat}g\n\nBaşarılar dileriz!`;
-    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
-}
-</script>
+        // İlk yükleme
+        renderExercises();
+    </script>
 </body>
 </html>
