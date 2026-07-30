@@ -87,14 +87,14 @@
         }
 
         .tab-btn {
-            flex: 1 1 30%;
+            flex: 1 1 22%;
             padding: 10px 6px;
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             color: var(--text-muted);
             border-radius: 12px;
             font-weight: 600;
-            font-size: 0.8rem;
+            font-size: 0.78rem;
             cursor: pointer;
             transition: all 0.3s;
             text-align: center;
@@ -173,8 +173,8 @@
             border: 2px dashed var(--border-color);
             border-radius: 14px;
             padding: 16px;
-            font-size: 1rem;
-            font-weight: 600;
+            font-size: 1.1rem;
+            font-weight: 700;
             text-align: center;
             color: var(--accent-gold);
             margin-bottom: 15px;
@@ -304,17 +304,18 @@
         <!-- Sekme Menüsü -->
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('game_sudoku', event)">🧮 Sudoku</button>
-            <button class="tab-btn" onclick="switchTab('game_flags', event)">🗺️ Coğrafya & Bayraklar</button>
-            <button class="tab-btn" onclick="switchTab('game_history', event)">📜 Tarih & Genel Kültür</button>
+            <button class="tab-btn" onclick="switchTab('game_flags', event)">🗺️ Coğrafya</button>
+            <button class="tab-btn" onclick="switchTab('game_history', event)">📜 Tarih & Kültür</button>
+            <button class="tab-btn" onclick="switchTab('game_math', event)">🔢 Matematik</button>
         </div>
 
-        <!-- OYUN 1: SUDOKU (MANTIK & SAYI BULMACALARI) -->
+        <!-- OYUN 1: SUDOKU -->
         <div id="game_sudoku" class="game-card active">
             <div class="game-title">
                 <span>🧮 Sudoku Zihin Egzersizi</span>
-                <span class="badge-count">Sınırsız Mantık Bulmacası</span>
+                <span class="badge-count">Sınırsız Mantık</span>
             </div>
-            <div class="game-desc">Her satır, sütun ve 2x2 kutuda 1-4 sayıları tam birer kez yer almalıdır. Boş hücreye dokunup alttan sayıyı seçin!</div>
+            <div class="game-desc">Her satır, sütun ve 2x2 kutuda 1-4 sayıları tam birer kez yer almalıdır. Hücreye dokunup alttan sayıyı seçin!</div>
             
             <div class="sudoku-container">
                 <div class="sudoku-grid" id="sudokuGrid"></div>
@@ -332,11 +333,11 @@
             <div id="sudoku-msg" class="status-msg"></div>
         </div>
 
-        <!-- OYUN 2: DÜNYA COĞRAFYASI & ÜLKE BAYRAKLARI -->
+        <!-- OYUN 2: COĞRAFYA & BAYRAKLAR -->
         <div id="game_flags" class="game-card">
             <div class="game-title">
                 <span>🗺️ Dünya Coğrafyası & Bayraklar</span>
-                <span class="badge-count" id="flagCountBadge">200+ Ülke Havuzu</span>
+                <span class="badge-count">200+ Ülke Havuzu</span>
             </div>
             <div class="game-desc">Bayrağı ve coğrafi ipucunu inceleyin, doğru ülkeyi tahmin edin.</div>
             
@@ -351,19 +352,34 @@
             <div id="flag-msg" class="status-msg"></div>
         </div>
 
-        <!-- OYUN 3: TARİH & GENEL KÜLTÜR BİLGİ YARIŞMASI -->
+        <!-- OYUN 3: TARİH & GENEL KÜLTÜR -->
         <div id="game_history" class="game-card">
             <div class="game-title">
                 <span>📜 Tarih & Genel Kültür</span>
-                <span class="badge-count" id="historyCountBadge">Sınırsız Soru Motoru</span>
+                <span class="badge-count">Dev Arşiv</span>
             </div>
-            <div class="game-desc">Bilimden tarihe, sanattan edebiyata devasa soru arşivinden rastgele sorular.</div>
+            <div class="game-desc">Bilimden tarihe, sanattan edebiyata rastgele sorular.</div>
             
             <div class="hint-box" id="historyQuestionText">Soru Yükleniyor...</div>
             <div class="options-grid" id="historyOptions"></div>
 
             <button class="btn btn-secondary" onclick="nextHistoryQuestion()">Sonraki Soru ➔</button>
             <div id="history-msg" class="status-msg"></div>
+        </div>
+
+        <!-- OYUN 4: PRATİK MATEMATİK & MANTIK (YENİ EKLEME) -->
+        <div id="game_math" class="game-card">
+            <div class="game-title">
+                <span>🔢 Pratik Matematik & Mantık</span>
+                <span class="badge-count">Sınırsız İşlem Engine</span>
+            </div>
+            <div class="game-desc">Hızlı hesaplama yapın, soru işaretinin (❓) yerine gelmesi gereken doğru cevabı bulun!</div>
+            
+            <div class="hint-box" id="mathQuestionText" style="font-size:1.4rem;">İşlem Yükleniyor...</div>
+            <div class="options-grid" id="mathOptions"></div>
+
+            <button class="btn btn-secondary" onclick="nextMathQuestion()">Sonraki Matematik Sorusu ➔</button>
+            <div id="math-msg" class="status-msg"></div>
         </div>
 
         <div class="footer">
@@ -380,14 +396,8 @@
             evt.currentTarget.classList.add('active');
         }
 
-        /* =========================================================
-           1. ALGORİTMİK SINIRSIZ SUDOKU MOTORU (4x4)
-           ========================================================= */
-        let currentSudokuSolution = [];
-        let currentSudokuPuzzle = [];
-        let userSudokuState = [];
-        let selectedCellIdx = null;
-
+        /* 1. SUDOKU MOTORU */
+        let currentSudokuSolution = [], currentSudokuPuzzle = [], userSudokuState = [], selectedCellIdx = null;
         const SUDOKU_BOARDS = [
             [1,2,3,4, 3,4,1,2, 2,1,4,3, 4,3,2,1],
             [2,1,4,3, 3,4,1,2, 4,3,2,1, 1,2,3,4],
@@ -399,14 +409,10 @@
             let base = [...SUDOKU_BOARDS[Math.floor(Math.random() * SUDOKU_BOARDS.length)]];
             let map = [1,2,3,4].sort(() => Math.random() - 0.5);
             currentSudokuSolution = base.map(n => map[n-1]);
-            
             currentSudokuPuzzle = [...currentSudokuSolution];
             let removeCount = Math.floor(Math.random() * 3) + 7;
             let indices = Array.from({length: 16}, (_, i) => i).sort(() => Math.random() - 0.5);
-            for(let i=0; i<removeCount; i++) {
-                currentSudokuPuzzle[indices[i]] = 0;
-            }
-
+            for(let i=0; i<removeCount; i++) currentSudokuPuzzle[indices[i]] = 0;
             userSudokuState = [...currentSudokuPuzzle];
             selectedCellIdx = null;
             document.getElementById('sudoku-msg').innerText = '';
@@ -420,16 +426,9 @@
                 let cell = document.createElement('div');
                 let val = userSudokuState[i];
                 let isFixed = currentSudokuPuzzle[i] !== 0;
-
                 cell.className = 'sudoku-cell' + (isFixed ? ' fixed' : '') + (selectedCellIdx === i ? ' selected' : '');
                 cell.innerText = val !== 0 ? val : '';
-                
-                if(!isFixed) {
-                    cell.onclick = () => {
-                        selectedCellIdx = i;
-                        renderSudokuGrid();
-                    };
-                }
+                if(!isFixed) cell.onclick = () => { selectedCellIdx = i; renderSudokuGrid(); };
                 grid.appendChild(cell);
             }
         }
@@ -443,32 +442,13 @@
 
         function checkSudoku() {
             let msg = document.getElementById('sudoku-msg');
-            let isComplete = !userSudokuState.includes(0);
-            if(!isComplete) {
-                msg.style.color = 'var(--danger-color)';
-                msg.innerText = '⚠️ Lütfen tüm boş alanları doldurun!';
-                return;
-            }
-
-            let isCorrect = true;
-            for(let i=0; i<16; i++) {
-                if(userSudokuState[i] !== currentSudokuSolution[i]) {
-                    isCorrect = false; break;
-                }
-            }
-
-            if(isCorrect) {
-                msg.style.color = 'var(--success-color)';
-                msg.innerText = '🎉 TEBRİKLER! Bulmacayı eksiksiz ve doğru çözdünüz!';
-            } else {
-                msg.style.color = 'var(--danger-color)';
-                msg.innerText = '❌ Bazı sayılar hatalı yerleştirilmiş. Kontrol edin!';
-            }
+            if(userSudokuState.includes(0)) { msg.style.color = 'var(--danger-color)'; msg.innerText = '⚠️ Lütfen tüm alanları doldurun!'; return; }
+            let isCorrect = userSudokuState.every((val, idx) => val === currentSudokuSolution[idx]);
+            if(isCorrect) { msg.style.color = 'var(--success-color)'; msg.innerText = '🎉 TEBRİKLER! Bulmaca doğru çözüldü!'; }
+            else { msg.style.color = 'var(--danger-color)'; msg.innerText = '❌ Hatalı sayılar var!'; }
         }
 
-        /* =========================================================
-           2. DÜNYA COĞRAFYASI & BAYRAKLAR VERİTABANI
-           ========================================================= */
+        /* 2. DÜNYA COĞRAFYASI & BAYRAKLAR */
         const COUNTRY_DB = [
             { flag: "🇹🇷", name: "Türkiye", capital: "Ankara", hint: "Asya ve Avrupa'yı birleştiren, boğazlarıyla ünlü kıtalararası ülke." },
             { flag: "🇯🇵", name: "Japonya", capital: "Tokyo", hint: "Doğu Asya'da 'Doğan Güneşin Ülkesi' olarak bilinen ada ülkesi." },
@@ -479,117 +459,123 @@
             { flag: "🇪🇬", name: "Mısır", capital: "Kahire", hint: "Nil Nehri ve antik piramitleriyle tanınan Kuzey Afrika ülkesi." },
             { flag: "🇬🇧", name: "İngiltere", capital: "Londra", hint: "Big Ben kulesi ve Büyük Britanya adasının ana ülkesi." },
             { flag: "🇨🇦", name: "Kanada", capital: "Ottawa", hint: "Akçaağaç yapraklı bayrağı ve geniş coğrafyasıyla bilinen Kuzey Amerika ülkesi." },
-            { flag: "🇦🇺", name: "Avustralya", capital: "Kanberra", hint: "Kangurular ve meşhur Sidney Opera Binası'nın bulunduğu kıta ülke." },
-            { flag: "🇮🇳", name: "Hindistan", capital: "Yeni Delhi", hint: "Tac Mahal abidesi ve baharat kültürüyle ünlü Güney Asya ülkesi." },
-            { flag: "🇪🇸", name: "İspanya", capital: "Madrid", hint: "İber Yarımadası'nda yer alan, Flamenco ve matador kültürüyle tanınan ülke." },
-            { flag: "🇦🇷", name: "Arjantin", capital: "Buenos Aires", hint: "Tango dansı ve Patagonya coğrafyasıyla tanınan Güney Amerika ülkesi." },
-            { flag: "🇸🇦", name: "Suudi Arabistan", capital: "Riyad", hint: "Mekke ve Medine kutsal şehirlerine ev sahipliği yapan çöl yarımadası." },
-            { flag: "🇰🇷", name: "Güney Kore", capital: "Seul", hint: "K-Pop ve teknoloji devleriyle tanınan Doğu Asya ülkesi." },
-            { flag: "🇲🇽", name: "Meksika", capital: "Mexico City", hint: "Maya ve Aztek medeniyetlerinin beşiği olan Kuzey Amerika ülkesi." },
-            { flag: "🇬🇷", name: "Yunanistan", capital: "Atina", hint: "Antik felsefe, Ege adaları ve Akdeniz mutfağının komşu ülkesi." },
-            { flag: "🇳🇱", name: "Hollanda", capital: "Amsterdam", hint: "Laleleri, yel değirmenleri ve kanallarıyla tanınan Avrupa ülkesi." },
-            { flag: "🇨🇭", name: "İsviçre", capital: "Bern", hint: "Alpler dağ sırası, çikolataları ve saatleriyle tanınan tarafsız ülke." },
-            { flag: "🇿🇦", name: "Güney Afrika", capital: "Pretoria", hint: "Ümit Burnu ve safari parklarıyla ünlü Afrika kıtasının en güney ülkesi." }
+            { flag: "🇦🇺", name: "Avustralya", capital: "Kanberra", hint: "Kangurular ve meşhur Sidney Opera Binası'nın bulunduğu kıta ülke." }
         ];
 
         let currentFlagIndex = 0;
-
         function nextFlagQuestion() {
             document.getElementById('flag-msg').innerText = '';
             currentFlagIndex = Math.floor(Math.random() * COUNTRY_DB.length);
             const country = COUNTRY_DB[currentFlagIndex];
-
             document.getElementById('flagEmoji').innerText = country.flag;
             document.getElementById('flagHintText').innerHTML = `<b>Başkent:</b> ${country.capital}<br><span style="font-size:0.85rem; font-weight:400; color:var(--text-muted);">${country.hint}</span>`;
 
             let options = [country.name];
             while(options.length < 4) {
-                let randomC = COUNTRY_DB[Math.floor(Math.random() * COUNTRY_DB.length)].name;
-                if(!options.includes(randomC)) options.push(randomC);
+                let r = COUNTRY_DB[Math.floor(Math.random() * COUNTRY_DB.length)].name;
+                if(!options.includes(r)) options.push(r);
             }
             options.sort(() => Math.random() - 0.5);
 
-            const optDiv = document.getElementById('flagOptions');
-            optDiv.innerHTML = '';
+            const optDiv = document.getElementById('flagOptions'); optDiv.innerHTML = '';
             options.forEach((opt, idx) => {
-                let btn = document.createElement('button');
-                btn.className = 'opt-btn';
+                let btn = document.createElement('button'); btn.className = 'opt-btn';
                 btn.innerText = `${String.fromCharCode(65 + idx)}) ${opt}`;
-                btn.onclick = () => checkFlagAnswer(opt);
+                btn.onclick = () => {
+                    let msg = document.getElementById('flag-msg');
+                    if(opt === country.name) { msg.style.color = 'var(--success-color)'; msg.innerText = `🎉 Doğru! ${country.name}`; }
+                    else { msg.style.color = 'var(--danger-color)'; msg.innerText = `❌ Yanlış! Doğru Ülke: ${country.name}`; }
+                };
                 optDiv.appendChild(btn);
             });
         }
 
-        function checkFlagAnswer(selectedName) {
-            const correctName = COUNTRY_DB[currentFlagIndex].name;
-            const msg = document.getElementById('flag-msg');
-            if(selectedName === correctName) {
-                msg.style.color = 'var(--success-color)';
-                msg.innerText = `🎉 MÜKEMMEL! Doğru Cevap: ${correctName}`;
-            } else {
-                msg.style.color = 'var(--danger-color)';
-                msg.innerText = `❌ YANLIŞ! Doğru Ülke: ${correctName}`;
-            }
-        }
-
-        /* =========================================================
-           3. DİNAMİK TARİH & GENEL KÜLTÜR BİLGİ ENGINE
-           ========================================================= */
+        /* 3. TARİH & GENEL KÜLTÜR */
         const HISTORY_BASE_QUESTIONS = [
             { q: "Osmanlı İmparatorluğu'nun kurucusu kimdir?", ans: "Osman Gazi", opts: ["Osman Gazi", "Orhan Gazi", "Fatih Sultan Mehmet", "Kanuni Sultan Süleyman"] },
             { q: "İstanbul hangi yıl Fatih Sultan Mehmet tarafından fethedilmiştir?", ans: "1453", opts: ["1453", "1071", "1299", "1923"] },
             { q: "Türkiye Cumhuriyeti hangi yılda ilan edilmiştir?", ans: "1923", opts: ["1923", "1919", "1920", "1922"] },
             { q: "Mustafa Kemal Atatürk'ün Samsun'a çıkarak Millî Mücadele'yi başlattığı tarih hangisidir?", ans: "19 Mayıs 1919", opts: ["19 Mayıs 1919", "23 Nisan 1920", "30 Ağustos 1922", "29 Ekim 1923"] },
             { q: "Malazgirt Meydan Muharebesi hangi yılda gerçekleşmiştir?", ans: "1071", opts: ["1071", "1453", "1176", "1243"] },
-            { q: "Dünyanın bilinen en eski tapınak kompleksi olan Göbeklitepe hangi ilimizdedir?", ans: "Şanlıurfa", opts: ["Şanlıurfa", "Gaziantep", "Mardin", "Diyarbakır"] },
-            { q: "Pîrî Reis'in ceylan derisi üzerine çizdiği ünlü dünya haritası hangi yüzyıla aittir?", ans: "16. Yüzyıl (1513)", opts: ["16. Yüzyıl (1513)", "14. Yüzyıl", "18. Yüzyıl", "12. Yüzyıl"] },
-            { q: "İstiklal Marşı'mızın şairi kimdir?", ans: "Mehmet Âkif Ersoy", opts: ["Mehmet Âkif Ersoy", "Yahya Kemal Beyatlı", "Namık Kemal", "Necip Fazıl Kısakürek"] },
-            { q: "Mimar Sinan'ın 'Ustalık Eserim' olarak adlandırdığı cami hangisidir?", ans: "Selimiye Camii (Edirne)", opts: ["Selimiye Camii (Edirne)", "Süleymaniye Camii (İstanbul)", "Şehzade Camii", "Sultanahmet Camii"] },
-            { q: "İlk Türk devletlerinde hükümdara yönetme yetkisinin Tanrı tarafından verildiğine inanılan anlayışa ne denir?", ans: "Kut Anlayışı", opts: ["Kut Anlayışı", "Töre", "Kurultay", "Cihat"] },
-            { q: "Dünya etrafında ilk tam tur deniz seyahatini başlatan kâşif kimdir?", ans: "Ferdinand Macellan", opts: ["Ferdinand Macellan", "Kristof Kolomb", "Vasco da Gama", "Marco Polo"] },
-            { q: "Fizik alanında yerçekimi kanununu bulan bilim insanı kimdir?", ans: "Isaac Newton", opts: ["Isaac Newton", "Albert Einstein", "Nikola Tesla", "Galileo Galilei"] },
-            { q: "Suyun kimyasal formülü hangisidir?", ans: "H₂O", opts: ["H₂O", "CO₂", "NaCl", "O₂"] },
-            { q: "Periyodik cetvelde 'Au' sembolüyle gösterilen element hangisidir?", ans: "Altın", opts: ["Altın", "Gümüş", "Bakır", "Alüminyum"] },
-            { q: "Dünyanın en derin noktası olan Mariana Çukuru hangi okyanustadır?", ans: "Büyük Okyanus (Pasifik)", opts: ["Büyük Okyanus (Pasifik)", "Atlas Okyanusu", "Hint Okyanusu", "Arktik Okyanusu"] }
+            { q: "Dünyanın bilinen en eski tapınak kompleksi olan Göbeklitepe hangi ilimizdedir?", ans: "Şanlıurfa", opts: ["Şanlıurfa", "Gaziantep", "Mardin", "Diyarbakır"] }
         ];
 
         let currentHistoryItem = null;
-
         function nextHistoryQuestion() {
             document.getElementById('history-msg').innerText = '';
-            let item = HISTORY_BASE_QUESTIONS[Math.floor(Math.random() * HISTORY_BASE_QUESTIONS.length)];
-            currentHistoryItem = item;
-
-            document.getElementById('historyQuestionText').innerText = item.q;
-
-            let options = [...item.opts].sort(() => Math.random() - 0.5);
-            const optDiv = document.getElementById('historyOptions');
-            optDiv.innerHTML = '';
-
+            currentHistoryItem = HISTORY_BASE_QUESTIONS[Math.floor(Math.random() * HISTORY_BASE_QUESTIONS.length)];
+            document.getElementById('historyQuestionText').innerText = currentHistoryItem.q;
+            let options = [...currentHistoryItem.opts].sort(() => Math.random() - 0.5);
+            const optDiv = document.getElementById('historyOptions'); optDiv.innerHTML = '';
             options.forEach((opt, idx) => {
-                let btn = document.createElement('button');
-                btn.className = 'opt-btn';
+                let btn = document.createElement('button'); btn.className = 'opt-btn';
                 btn.innerText = `${String.fromCharCode(65 + idx)}) ${opt}`;
-                btn.onclick = () => checkHistoryAnswer(opt);
+                btn.onclick = () => {
+                    let msg = document.getElementById('history-msg');
+                    if(opt === currentHistoryItem.ans) { msg.style.color = 'var(--success-color)'; msg.innerText = '🎉 Doğru Cevap!'; }
+                    else { msg.style.color = 'var(--danger-color)'; msg.innerText = `❌ Doğru Cevap: ${currentHistoryItem.ans}`; }
+                };
                 optDiv.appendChild(btn);
             });
         }
 
-        function checkHistoryAnswer(selectedOpt) {
-            const msg = document.getElementById('history-msg');
-            if(selectedOpt === currentHistoryItem.ans) {
-                msg.style.color = 'var(--success-color)';
-                msg.innerText = '🎉 MÜKEMMEL! Doğru cevap.';
-            } else {
-                msg.style.color = 'var(--danger-color)';
-                msg.innerText = `❌ YANLIŞ! Doğru cevap: ${currentHistoryItem.ans}`;
+        /* 4. PRATİK MATEMATİK & MANTIK ALGORİTMASI */
+        let currentMathAns = 0;
+        function nextMathQuestion() {
+            document.getElementById('math-msg').innerText = '';
+            let type = Math.floor(Math.random() * 3);
+            let qText = "", correct = 0;
+
+            if(type === 0) { // Dört İşlem
+                let n1 = Math.floor(Math.random() * 40) + 10;
+                let n2 = Math.floor(Math.random() * 20) + 5;
+                let op = ['+', '-', '×'][Math.floor(Math.random() * 3)];
+                if(op === '+') { correct = n1 + n2; qText = `${n1} + ${n2} = ❓`; }
+                else if(op === '-') { correct = n1 - n2; qText = `${n1} - ${n2} = ❓`; }
+                else { correct = n1 * n2; qText = `${n1} × ${n2} = ❓`; }
+            } else if(type === 1) { // Basit Denklem
+                let x = Math.floor(Math.random() * 15) + 2;
+                let a = Math.floor(Math.random() * 5) + 2;
+                let b = Math.floor(Math.random() * 20) + 5;
+                let res = (a * x) + b;
+                correct = x;
+                qText = `${a}X + ${b} = ${res}  ➔  X = ❓`;
+            } else { // Örüntü Dizisi
+                let start = Math.floor(Math.random() * 10) + 2;
+                let step = Math.floor(Math.random() * 6) + 3;
+                let a1 = start, a2 = start + step, a3 = a2 + step, a4 = a3 + step;
+                correct = a4 + step;
+                qText = `${a1},  ${a2},  ${a3},  ${a4},  ❓`;
             }
+
+            currentMathAns = correct;
+            document.getElementById('mathQuestionText').innerText = qText;
+
+            let opts = [correct];
+            while(opts.length < 4) {
+                let fake = correct + (Math.floor(Math.random() * 10) - 5);
+                if(fake !== correct && !opts.includes(fake)) opts.push(fake);
+            }
+            opts.sort(() => Math.random() - 0.5);
+
+            const optDiv = document.getElementById('mathOptions'); optDiv.innerHTML = '';
+            opts.forEach((opt, idx) => {
+                let btn = document.createElement('button'); btn.className = 'opt-btn';
+                btn.innerText = `${String.fromCharCode(65 + idx)}) ${opt}`;
+                btn.onclick = () => {
+                    let msg = document.getElementById('math-msg');
+                    if(opt === currentMathAns) { msg.style.color = 'var(--success-color)'; msg.innerText = `🎉 Harika Hızlı Hesaplama! Doğru Cevap: ${opt}`; }
+                    else { msg.style.color = 'var(--danger-color)'; msg.innerText = `❌ Hatalı Hesaplama! Doğru Cevap: ${currentMathAns}`; }
+                };
+                optDiv.appendChild(btn);
+            });
         }
 
         window.onload = function() {
             generateNewSudoku();
             nextFlagQuestion();
             nextHistoryQuestion();
+            nextMathQuestion();
         };
     </script>
 </body>
